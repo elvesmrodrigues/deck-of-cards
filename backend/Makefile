@@ -25,6 +25,7 @@ BIN_FILES = ${BIN_DIR}/main.o \
 			${BIN_DIR}/factory_player.o \
 			${BIN_DIR}/serializer_player.o \
 			${BIN_DIR}/serializer_deck.o \
+			${BIN_DIR}/serializer_game.o \
 
 ${TARGET}: ${BIN_FILES}
 	${CC} ${CFLAGS} -o ${TARGET} ${BIN_DIR}/*.o
@@ -77,6 +78,9 @@ ${BIN_DIR}/serializer_player.o: ${INCLUDE_DIR}/serializers/PlayerSerializer.hpp 
 
 ${BIN_DIR}/serializer_deck.o: ${INCLUDE_DIR}/serializers/DeckSerializer.hpp ${SRC_DIR}/serializers/DeckSerializer.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/serializers/DeckSerializer.cpp  -o ${BIN_DIR}/serializer_deck.o
+
+${BIN_DIR}/serializer_game.o: ${INCLUDE_DIR}/serializers/GameSerializer.hpp ${SRC_DIR}/serializers/GameSerializer.cpp 
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/serializers/GameSerializer.cpp  -o ${BIN_DIR}/serializer_game.o
 
 # Data storage
 ${BIN_DIR}/storage.o: ${INCLUDE_DIR}/storages/Storage.hpp ${SRC_DIR}/storages/Storage.cpp 

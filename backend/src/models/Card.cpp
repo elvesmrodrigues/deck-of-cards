@@ -41,3 +41,7 @@ int Card::get_value() {
 std::string Card::get_class_name() {
     return name;
 }
+
+std::string Card::repr() {
+    return this->_suit + " " + this->_face;
+}

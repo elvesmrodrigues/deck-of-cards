@@ -26,7 +26,7 @@ class Player: public Model {
         void set_name(std::string name);
 
         std::list<unsigned int> &get_card_ids();
-        void receive_cards(unsigned int card_id);
+        void receive_card(unsigned int card_id);
         
         bool is_playing();
 

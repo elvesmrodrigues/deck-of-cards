@@ -1,20 +1,20 @@
 #include "services/Service.hpp"
 
 namespace Service {
-    unsigned int get_id_from_request(const httplib::Request &req) {
+    unsigned int get_id_from_request(const httplib::Request &req, const std::string & id_name) {
         try {
-            return std::stoul(req.path_params.at("id"));
+            return std::stoul(req.path_params.at(id_name));
         } catch (const std::out_of_range &e) {   
             return NO_ID_IN_REQUEST;
         } 
     }
 
-    bool valid_id(const std::string &model_name, httplib::Response &res, unsigned int &id) {
+    bool valid_id(const std::string &model_name, httplib::Response &res, unsigned int &id, const std::string &id_name) {
         Storage &storage = Storage::get_instance();
 
         json data;
         if (id == NO_ID_IN_REQUEST) {
-            data["message"] = "Please, inform the ID of the item to be removed.";
+            data["message"] = "Please, inform \"" + id_name + "\".";
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data.dump(), JSON_RESPONSE);
@@ -23,7 +23,7 @@ namespace Service {
         }
 
         if (!storage.exists(model_name, id)) {
-            data["message"] = "There is no item with the informed ID: " + std::to_string(id) + ".";
+            data["message"] = "There is no item with the informed \"" + id_name + "\" " + std::to_string(id) + ".";
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data.dump(), JSON_RESPONSE);

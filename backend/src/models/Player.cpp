@@ -21,7 +21,7 @@ std::list<unsigned int> &Player::get_card_ids() {
     return this->_card_ids;
 }
 
-void Player::receive_cards(unsigned int card_id) {
+void Player::receive_card(unsigned int card_id) {
     this->_card_ids.push_back(card_id);
 }
 

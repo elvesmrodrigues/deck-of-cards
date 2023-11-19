@@ -34,7 +34,9 @@ class Game: public Model {
         void add_deck(Deck &deck);
         void shuffle();
 
-        std::list<unsigned int> & get_card_ids();
+        std::list<unsigned int> &get_card_ids();
+        std::list<unsigned int> &get_player_ids();
+        std::list<unsigned int> &get_deck_ids();
 
         unsigned int deal_card();
 

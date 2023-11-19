@@ -78,3 +78,11 @@ std::string Game::get_access_code() {
 void Game::set_access_code(std::string access_code) {
     this->_access_code = access_code;
 }
+
+std::list<unsigned int> &Game::get_player_ids() {
+    return this->_player_ids;
+}
+
+std::list<unsigned int> &Game::get_deck_ids() {
+    return this->_deck_ids;
+}
