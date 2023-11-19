@@ -63,12 +63,9 @@ namespace Service {
 
     json body_to_json(const httplib::Request &req) {
         try {
-
-            std::cout << req.body << std::endl;
             return json::parse(req.body);
             
         } catch (const json::parse_error &e) {
-            std::cout << "invalid json" << std::endl;
             return nullptr;
         }
     }

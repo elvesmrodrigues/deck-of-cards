@@ -4,7 +4,7 @@ namespace PlayerService {
     void create(const httplib::Request &req, httplib::Response &res) {
         std::list<std::string> required_values = {"name"};
 
-        if (!Service::has_required_values(req, res, required_values))
+        if (!Service::has_required_fields(req, res, required_values))
             return;
 
         json data = json::parse(req.body), data_res;
@@ -56,39 +56,48 @@ namespace PlayerService {
         if (!Service::valid_id(Player::name, res, id))
             return;
 
-        std::list<std::string> required_values = {"name"};
+        json data = Service::body_to_json(req), data_res;
 
-        if (!Service::has_required_values(req, res, required_values))
-            return;
-
-        json data = json::parse(req.body), data_res;
-
-        if (!data["name"].is_string()) {
+        if (data == nullptr) {
             res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field name must be a string.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-        }
 
-        std::string player_name = data["name"];
-
-        if (player_name.size() < MIN_SIZE_OF_PLAYER_NAME) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field name must be a string with at least " + std::to_string(MIN_SIZE_OF_PLAYER_NAME) + " characters.";
+            data_res["message"] = "Invalid JSON format.";
             res.set_content(data_res.dump(), JSON_RESPONSE);
             return;
         }
 
         Storage &storage = Storage::get_instance();
-
         Player * player = (Player *) storage.retrieve(id);
-        player->set_name(player_name);
 
-        storage.update(id, player);
+        std::string field = "name";
+        if (Service::json_has_field(data, field)) {
+            if (!data[field].is_string()) {
+                res.status = HTTP_STATUS_BAD_REQUEST;
+                data_res["message"] = "The field name must be a string.";
+                res.set_content(data_res.dump(), JSON_RESPONSE);
+            }
 
-        data_res["message"] = "Player updated succesfully.";
+            std::string player_name = data["name"];
 
-        res.status = HTTP_STATUS_OK;
-        res.set_content(data_res.dump(), JSON_RESPONSE);
+            if (player_name.size() < MIN_SIZE_OF_PLAYER_NAME) {
+                res.status = HTTP_STATUS_BAD_REQUEST;
+                data_res["message"] = "The field name must be a string with at least " + std::to_string(MIN_SIZE_OF_PLAYER_NAME) + " characters.";
+                res.set_content(data_res.dump(), JSON_RESPONSE);
+                return;
+            }
+
+            player->set_name(player_name);
+            storage.update(id, player);
+
+            data_res["message"] = "Player updated succesfully.";
+
+            res.status = HTTP_STATUS_OK;
+            res.set_content(data_res.dump(), JSON_RESPONSE);
+        } else {
+            res.status = HTTP_STATUS_BAD_REQUEST;
+            data_res["message"] = "No valid fields specified to be updated.";
+            res.set_content(data_res.dump(), JSON_RESPONSE);
+        }
     }
 
     void retrieve(const httplib::Request &req, httplib::Response &res) {
