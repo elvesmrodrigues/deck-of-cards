@@ -34,12 +34,10 @@ namespace Service {
         return true;
     }
 
-    bool has_required_values(const httplib::Request &req, httplib::Response &res, std::list<std::string> &required_values) {
-        json data, data_res;
+    bool has_required_fields(const httplib::Request &req, httplib::Response &res, std::list<std::string> &required_values) {
+        json data_res, data = Service::body_to_json(req);
 
-        try {
-            data = json::parse(req.body);
-        } catch (const json::parse_error &e) {
+        if (data == nullptr) {
             res.status = HTTP_STATUS_BAD_REQUEST;
 
             data_res["message"] = "Invalid JSON format.";
@@ -50,10 +48,10 @@ namespace Service {
         std::list<std::string>::iterator req_val_it;
 
         for (req_val_it = required_values.begin(); req_val_it != required_values.end(); req_val_it++) {
-            if (data.find(* req_val_it) == data.end()) {
+            if (!Service::json_has_field(data, * req_val_it)) {
                 res.status = HTTP_STATUS_BAD_REQUEST;
                 
-                data_res["message"] = "The field \"" + *req_val_it + "\" is required.";
+                data_res["message"] = "The field \"" + * req_val_it + "\" is required.";
                 res.set_content(data_res.dump(), JSON_RESPONSE);
                 
                 return false;
@@ -61,5 +59,21 @@ namespace Service {
         }
 
         return true;
+    }
+
+    json body_to_json(const httplib::Request &req) {
+        try {
+
+            std::cout << req.body << std::endl;
+            return json::parse(req.body);
+            
+        } catch (const json::parse_error &e) {
+            std::cout << "invalid json" << std::endl;
+            return nullptr;
+        }
+    }
+
+    bool json_has_field(json &data, std::string &field) {
+        return data.find(field) != data.end();
     }
 }
