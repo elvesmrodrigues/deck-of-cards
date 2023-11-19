@@ -6,7 +6,7 @@
 
 class PlayerFactory {
     public:
-        static unsigned int create_player(const std::string name);         
+        static unsigned int create(const std::string name);         
 };
 
 

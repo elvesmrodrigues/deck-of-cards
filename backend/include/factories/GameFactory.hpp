@@ -6,7 +6,7 @@
 
 class GameFactory {
     public:
-        static unsigned int create_game(const int creator_id);
+        static unsigned int create(const int creator_id, std::string access_code);
 };
 
 #endif // GAME_FACTORY_H

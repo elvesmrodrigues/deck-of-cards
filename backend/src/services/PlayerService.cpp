@@ -24,7 +24,7 @@ namespace PlayerService {
             return;
         }
 
-        unsigned int player_id = PlayerFactory::create_player(player_name);
+        unsigned int player_id = PlayerFactory::create(player_name);
 
         data_res["id"] = player_id;
 

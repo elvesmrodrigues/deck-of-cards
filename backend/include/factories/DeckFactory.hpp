@@ -10,7 +10,7 @@
 
 class DeckFactory {
     public:
-        static unsigned int create_deck();
+        static unsigned int create();
 };
 
 

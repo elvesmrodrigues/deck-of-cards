@@ -1,7 +1,7 @@
 #include <iostream>
 #include "factories/DeckFactory.hpp"
 
-unsigned int DeckFactory::create_deck() {
+unsigned int DeckFactory::create() {
     Storage & storage = Storage::get_instance();
 
     std::vector<std::string> suits = {CARD_SUIT_HEARTS, CARD_SUIT_SPACES, CARD_SUIT_CLUBS, CARD_SUIT_DIAMONDS};

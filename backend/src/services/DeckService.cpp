@@ -2,7 +2,7 @@
 
 namespace DeckService {
     void create(const httplib::Request &req, httplib::Response &res) {
-        unsigned int deck_id = DeckFactory::create_deck();
+        unsigned int deck_id = DeckFactory::create();
 
         json data;
         data["id"] = deck_id;
