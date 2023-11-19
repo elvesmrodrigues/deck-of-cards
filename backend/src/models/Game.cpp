@@ -2,9 +2,12 @@
 
 std::string Game::name = "game";
 
-Game::Game(unsigned int creator_id) {
+Game::Game(unsigned int creator_id, std::string access_code) {
     this->_creator_id = creator_id;
+    this->_access_code = access_code;
+
     std::srand(static_cast<unsigned int>(std::time(0)));
+    
     name = "game";
 }
 
@@ -66,4 +69,12 @@ std::list<unsigned int> & Game::get_card_ids() {
 
 std::string Game::get_class_name() {
     return name;
+}
+
+std::string Game::get_access_code() {
+    return this->_access_code;
+}
+
+void Game::set_access_code(std::string access_code) {
+    this->_access_code = access_code;
 }
