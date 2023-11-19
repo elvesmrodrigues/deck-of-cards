@@ -37,7 +37,7 @@ namespace PlayerService {
 
         unsigned int id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(res, id))
+        if (!Service::valid_id(Player::name, res, id))
             return;
         
         Storage &storage = Storage::get_instance();
@@ -53,7 +53,7 @@ namespace PlayerService {
     void update(const httplib::Request &req, httplib::Response &res) {
         unsigned int id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(res, id))
+        if (!Service::valid_id(Player::name, res, id))
             return;
 
         std::list<std::string> required_values = {"name"};
@@ -121,7 +121,7 @@ namespace PlayerService {
         Storage &storage = Storage::get_instance();
         unsigned int id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(res, id))
+        if (!Service::valid_id(Player::name, res, id))
             return;
         
         Player * player = (Player *) storage.retrieve(id);

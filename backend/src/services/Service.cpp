@@ -9,7 +9,7 @@ namespace Service {
         } 
     }
 
-    bool valid_id(httplib::Response &res, unsigned int &id) {
+    bool valid_id(const std::string &model_name, httplib::Response &res, unsigned int &id) {
         Storage &storage = Storage::get_instance();
 
         json data;
@@ -22,7 +22,7 @@ namespace Service {
             return false;
         }
 
-        if (!storage.exists(id)) {
+        if (!storage.exists(model_name, id)) {
             data["message"] = "There is no item with the informed ID: " + std::to_string(id) + ".";
 
             res.status = HTTP_STATUS_BAD_REQUEST;

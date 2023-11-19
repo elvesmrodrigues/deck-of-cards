@@ -24,7 +24,7 @@ using nlohmann::json;
 
 namespace Service {
     unsigned int get_id_from_request(const httplib::Request &req);
-    bool valid_id(httplib::Response &res, unsigned int &id);
+    bool valid_id(const std::string &model_name, httplib::Response &res, unsigned int &id);
     bool has_required_values(const httplib::Request &req, httplib::Response &res, std::list<std::string> &required_values);
 }
 

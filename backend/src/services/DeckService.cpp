@@ -18,7 +18,7 @@ namespace DeckService {
 
         unsigned int id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(res, id))
+        if (!Service::valid_id(Deck::name, res, id))
             return;
 
         storage.remove(Deck::name, id);
@@ -69,7 +69,7 @@ namespace DeckService {
         Storage &storage = Storage::get_instance();
         unsigned int id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(res, id))
+        if (!Service::valid_id(Deck::name, res, id))
             return;
 
         Deck *deck = (Deck *) storage.retrieve(id);
