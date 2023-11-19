@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <algorithm>
 
 #include "../models/Model.hpp"
 #include "../../libs/nlohmann/json.hpp"
@@ -30,7 +31,7 @@ class Storage {
 
         void remove(const std::string model_name, unsigned int &id);
 
-        bool exists(unsigned int &id);
+        bool exists(const std::string & model_name, unsigned int &id);
 
         ~Storage();
 };

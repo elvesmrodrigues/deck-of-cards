@@ -54,8 +54,9 @@ void Storage::remove(const std::string model_name, unsigned int &id) {
     this->_model_ids[model_name].remove(id);  
 }
 
-bool Storage::exists(unsigned int &id) {
-    return this->_data.count(id) == 1;
+bool Storage::exists(const std::string & model_name, unsigned int &id) {
+    std::list<unsigned int>::iterator it = std::find(this->_model_ids[model_name].begin(), this->_model_ids[model_name].end(), id);
+    return it != this->_model_ids[model_name].end();
 }
 
 Storage::~Storage() {
