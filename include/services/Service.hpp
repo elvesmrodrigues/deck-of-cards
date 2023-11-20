@@ -27,6 +27,7 @@
 #include <string>
 #include <utility>
 
+#include "../middlewares/AuthMiddleware.hpp"
 #include "../utils/constants.hpp"
 #include "../../libs/server/httplib.h"
 #include "../../libs/nlohmann/json.hpp"

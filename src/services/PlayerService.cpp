@@ -16,7 +16,7 @@ namespace PlayerService {
         std::string username = data["username"];
 
         if (!Player::username_available(username)) {
-            data_res["message"] = "The \"sername\" is not available, please choose another.";
+            data_res["message"] = "The \"username\" is already in use, please choose another one.";
 
             res.status = HTTP_STATUS_CONFLIT;
             res.set_content(data_res.dump(), JSON_RESPONSE);
@@ -35,7 +35,7 @@ namespace PlayerService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void remove(const httplib::Request &req, httplib::Response &res) {
+    void auth_remove(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         json data, data_res;
 
         unsigned int id = Service::get_id_from_request(req);
@@ -44,16 +44,20 @@ namespace PlayerService {
             return;
         
         Storage &storage = Storage::get_instance();
+        Player * player = (Player *) storage.retrieve(id);
         
+        std::string username = player->get_username();
+
+        Player::remove_username(username);
         storage.remove(Player::name, id);
-        
+
         data_res["message"] = "Player removed succesfully.";
 
         res.status = HTTP_STATUS_NO_CONTENT;
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void update(const httplib::Request &req, httplib::Response &res) {
+    void auth_update(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int id = Service::get_id_from_request(req);
 
         if (!Service::valid_id(Player::name, res, id))
@@ -102,7 +106,7 @@ namespace PlayerService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void retrieve(const httplib::Request &req, httplib::Response &res) {
+    void auth_retrieve(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         Storage & storage = Storage::get_instance();
         model_list players = storage.retrieve_all(Player::name);
 
@@ -128,7 +132,7 @@ namespace PlayerService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void retrieve_by_id(const httplib::Request &req, httplib::Response &res) {
+    void auth_retrieve_by_id(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         Storage &storage = Storage::get_instance();
         unsigned int id = Service::get_id_from_request(req);
 
@@ -140,5 +144,25 @@ namespace PlayerService {
 
         res.status = HTTP_STATUS_OK;
         res.set_content(data_res.dump(), JSON_RESPONSE);
+    }
+
+    void add_routes(httplib::Server & server) {
+        server.Post("/player", PlayerService::create);
+
+        server.Get("/player", [](const httplib::Request &req, httplib::Response & res){ 
+            AuthMiddleware::verify_request(req, res, PlayerService::auth_retrieve); 
+        });
+
+        server.Get("/player/:id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_player_identity_request(req, res, PlayerService::auth_retrieve_by_id); 
+        });
+
+        server.Put("/player/:id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_player_identity_request(req, res, PlayerService::auth_update); 
+        });
+
+        server.Delete("/player/:id", [](const httplib::Request &req, httplib::Response &res){
+            AuthMiddleware::verify_player_identity_request(req, res, PlayerService::auth_remove); 
+        });
     }
 } 

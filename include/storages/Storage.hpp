@@ -18,10 +18,10 @@ class Storage {
         Storage & operator=(const Storage &) = delete;
 
         unsigned int _id_iterator = 0;
-        id_to_model_map _data; 
         model_name_to_data_ids_map _model_ids;
 
     public:
+        id_to_model_map _data; 
         static Storage & get_instance();
 
         unsigned int save(Model * model);

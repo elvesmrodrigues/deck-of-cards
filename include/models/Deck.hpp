@@ -18,6 +18,7 @@ class Deck: public Model {
         unsigned_list get_card_ids();
 
         std::string get_class_name() override;
+        
         ~Deck();
 };
 

@@ -12,7 +12,7 @@ class Model {
         
         Model();
         
-        unsigned int get_id();
+        unsigned int get_id() const;
         void set_id(unsigned int id);
 
         virtual std::string get_class_name();

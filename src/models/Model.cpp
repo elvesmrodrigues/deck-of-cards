@@ -7,14 +7,14 @@ Model::Model() {
     id = -1;
 }
 
-unsigned int Model::get_id() {
-    return this->id;
-}
-
 void Model::set_id(unsigned int id) {
     this->id = id;
 }
 
 std::string Model::get_class_name() {
     return name;
+
+}
+unsigned int Model::get_id() const {
+    return this->id;
 }

@@ -15,9 +15,11 @@ BIN_FILES = ${BIN_DIR}/main.o \
 			${BIN_DIR}/model_deck.o \
 			${BIN_DIR}/model_game.o \
 			${BIN_DIR}/model_player.o \
+			${BIN_DIR}/model_auth_token.o \
 			${BIN_DIR}/service_game.o \
 			${BIN_DIR}/service_deck.o \
 			${BIN_DIR}/service_player.o \
+			${BIN_DIR}/service_auth.o \
 			${BIN_DIR}/service.o \
 			${BIN_DIR}/storage.o \
 			${BIN_DIR}/factory_deck.o \
@@ -26,6 +28,7 @@ BIN_FILES = ${BIN_DIR}/main.o \
 			${BIN_DIR}/serializer_player.o \
 			${BIN_DIR}/serializer_deck.o \
 			${BIN_DIR}/serializer_game.o \
+			${BIN_DIR}/auth_middleware.o \
 
 ${TARGET}: ${BIN_FILES}
 	${CC} ${CFLAGS} -o ${TARGET} ${BIN_DIR}/*.o
@@ -49,6 +52,9 @@ ${BIN_DIR}/model_game.o: ${INCLUDE_DIR}/models/Game.hpp ${SRC_DIR}/models/Game.c
 ${BIN_DIR}/model_player.o: ${INCLUDE_DIR}/models/Player.hpp ${SRC_DIR}/models/Player.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/models/Player.cpp  -o ${BIN_DIR}/model_player.o
 
+${BIN_DIR}/model_auth_token.o: ${INCLUDE_DIR}/models/AuthToken.hpp ${SRC_DIR}/models/AuthToken.cpp 
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/models/AuthToken.cpp  -o ${BIN_DIR}/model_auth_token.o
+
 # Services binaries 
 ${BIN_DIR}/service_deck.o: ${INCLUDE_DIR}/services/DeckService.hpp ${SRC_DIR}/services/DeckService.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/services/DeckService.cpp  -o ${BIN_DIR}/service_deck.o
@@ -58,6 +64,9 @@ ${BIN_DIR}/service_game.o: ${INCLUDE_DIR}/services/GameService.hpp ${SRC_DIR}/se
 
 ${BIN_DIR}/service_player.o: ${INCLUDE_DIR}/services/PlayerService.hpp ${SRC_DIR}/services/PlayerService.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/services/PlayerService.cpp  -o ${BIN_DIR}/service_player.o
+
+${BIN_DIR}/service_auth.o: ${INCLUDE_DIR}/services/AuthService.hpp ${SRC_DIR}/services/AuthService.cpp 
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/services/AuthService.cpp  -o ${BIN_DIR}/service_auth.o
 
 ${BIN_DIR}/service.o: ${INCLUDE_DIR}/services/Service.hpp ${SRC_DIR}/services/Service.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/services/Service.cpp  -o ${BIN_DIR}/service.o
@@ -81,6 +90,10 @@ ${BIN_DIR}/serializer_deck.o: ${INCLUDE_DIR}/serializers/DeckSerializer.hpp ${SR
 
 ${BIN_DIR}/serializer_game.o: ${INCLUDE_DIR}/serializers/GameSerializer.hpp ${SRC_DIR}/serializers/GameSerializer.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/serializers/GameSerializer.cpp  -o ${BIN_DIR}/serializer_game.o
+
+# Middlewares binaries
+${BIN_DIR}/auth_middleware.o: ${INCLUDE_DIR}/middlewares/AuthMiddleware.hpp ${SRC_DIR}/middlewares/AuthMiddleware.cpp 
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/middlewares/AuthMiddleware.cpp  -o ${BIN_DIR}/auth_middleware.o
 
 # Data storage
 ${BIN_DIR}/storage.o: ${INCLUDE_DIR}/storages/Storage.hpp ${SRC_DIR}/storages/Storage.cpp 

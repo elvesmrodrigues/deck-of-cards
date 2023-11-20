@@ -8,34 +8,34 @@
 #include "../serializers/GameSerializer.hpp"
 
 namespace GameService{
-    void create(const httplib::Request &req, httplib::Response &res);
-    void remove(const httplib::Request &req, httplib::Response &res);
-    void update(const httplib::Request &req, httplib::Response &res);
-    void retrieve(const httplib::Request &req, httplib::Response &res);
-    void retrieve_by_id(const httplib::Request &req, httplib::Response &res);
+    json _parse_player(unsigned int &player_id);
+    bool _player_score_comparator(const json & a, const json & b);
 
-    void shuffle(const httplib::Request &req, httplib::Response &res);
+    void auth_create(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_remove(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_update(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_retrieve(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_retrieve_by_id(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    json parse_player(unsigned int &player_id);
+    void auth_auth_shuffle(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    void players(const httplib::Request &req, httplib::Response &res);
-    void player_cards(const httplib::Request &req, httplib::Response &res);
+    void auth_players(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_player_cards(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    void add_player(const httplib::Request &req, httplib::Response &res);
-    void remove_player(const httplib::Request &req, httplib::Response &res);
+    void auth_add_player(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_remove_player(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    void add_deck(const httplib::Request &req, httplib::Response &res);
-    void decks(const httplib::Request &req, httplib::Response &res);
+    void auth_add_deck(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_decks(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    void deal_card(const httplib::Request &req, httplib::Response &res);
-    
-    void count_cards_remaing_per_suit(const httplib::Request &req, httplib::Response &res);
-    void count_cards_remaining(const httplib::Request &req, httplib::Response &res);
+    void auth_deal_card(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    void get_access_code(const httplib::Request &req, httplib::Response &res);
-    void set_access_code(const httplib::Request &req, httplib::Response &res);
+    void auth_count_cards_remaing_per_suit(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_count_cards_remaining(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
-    bool player_score_comparator(const json & a, const json & b);
+    void auth_get_access_code(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+
+    void add_routes(httplib::Server &server);
 };
 
 

@@ -1,7 +1,7 @@
 #include "services/GameService.hpp"
 
 namespace GameService {
-    void create(const httplib::Request &req, httplib::Response &res) {
+    void auth_create(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         field_type_list required_values = {
             std::make_pair("creator_id", EXPECTED_TYPE_NUMBER),
             std::make_pair("access_code", EXPECTED_TYPE_STRING)
@@ -10,21 +10,10 @@ namespace GameService {
         if (!Service::has_required_fields(req, res, required_values))
             return;
 
-        Storage & storage = Storage::get_instance();
-
         json data = json::parse(req.body), data_res;
 
-        unsigned int creator_id = data["creator_id"];
         std::string access_code = data["access_code"];
-
-        if(!storage.exists(Player::name, creator_id)) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field \"creator_id\" must be a valid player ID.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        } 
-
-        unsigned int game_id = GameFactory::create(creator_id, access_code);
+        unsigned int game_id = GameFactory::create(logged_player.get_id(), access_code);
 
         data_res["id"] = game_id;
 
@@ -32,17 +21,14 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void remove(const httplib::Request &req, httplib::Response &res) {
+    void auth_remove(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
+        unsigned int game_id = Service::get_id_from_request(req);
+
         json data, data_res;
-
-        unsigned int id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, id))
-            return;
 
         Storage &storage = Storage::get_instance();
 
-        storage.remove(Game::name, id);
+        storage.remove(Game::name, game_id);
 
         data_res["message"] = "Game removed succesfully.";
 
@@ -50,11 +36,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void update(const httplib::Request &req, httplib::Response &res) {
+    void auth_update(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         Storage & storage = Storage::get_instance();
         Game * game = (Game *) storage.retrieve(game_id);
@@ -100,7 +83,7 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void retrieve(const httplib::Request &req, httplib::Response &res) {
+    void auth_retrieve(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         Storage & storage = Storage::get_instance();
         model_list games = storage.retrieve_all(Game::name);
 
@@ -126,25 +109,19 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void retrieve_by_id(const httplib::Request &req, httplib::Response &res) {
+    void auth_retrieve_by_id(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         Storage &storage = Storage::get_instance();
-        unsigned int id = Service::get_id_from_request(req);
+        unsigned int game_id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(Game::name, res, id))
-            return;
-
-        Game * game = (Game *) storage.retrieve(id);
+        Game *game = (Game *)storage.retrieve(game_id);
         json data_res = GameSerializer::serialize(* game);
 
         res.status = HTTP_STATUS_OK;
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void shuffle(const httplib::Request &req, httplib::Response &res) {
+    void auth_shuffle(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         Storage & storage = Storage::get_instance();
         Game * game = (Game *) storage.retrieve(game_id);
@@ -159,7 +136,7 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    json parse_player(unsigned int &player_id) {
+    json _parse_player(unsigned int &player_id) {
         Storage & storage = Storage::get_instance();
 
         Player * player = (Player *) storage.retrieve(player_id);
@@ -186,15 +163,12 @@ namespace GameService {
         return data;
     }
 
-    bool player_score_comparator(const json &a, const json &b) {
+    bool _player_score_comparator(const json &a, const json &b) {
         return a["score"] > b["score"];
     }
 
-    void players(const httplib::Request &req, httplib::Response &res) {
+    void auth_players(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         Storage &storage = Storage::get_instance();
         Game *game = (Game *)storage.retrieve(game_id);
@@ -205,9 +179,9 @@ namespace GameService {
         unsigned_list::iterator it;
 
         for (it = player_ids.begin(); it != player_ids.end(); it++) 
-            data.push_back(GameService::parse_player(*it));
+            data.push_back(GameService::_parse_player(*it));
 
-        data.sort(GameService::player_score_comparator);
+        data.sort(GameService::_player_score_comparator);
 
         json data_res(data);
         
@@ -215,11 +189,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void player_cards(const httplib::Request &req, httplib::Response &res) {
+    void auth_player_cards(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         unsigned int player_id = Service::get_id_from_request(req, "player_id");
         if (!Service::valid_id(Player::name, res, player_id, "player_id"))
@@ -250,17 +221,14 @@ namespace GameService {
             return;
         }
         
-        data_res = GameService::parse_player(player_id);
+        data_res = GameService::_parse_player(player_id);
 
         res.status = HTTP_STATUS_OK;
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void add_player(const httplib::Request &req, httplib::Response &res) {
+    void auth_add_player(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         unsigned int player_id = Service::get_id_from_request(req, "player_id");
         if (!Service::valid_id(Player::name, res, player_id, "player_id"))
@@ -294,11 +262,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void remove_player(const httplib::Request &req, httplib::Response &res) {
+    void auth_remove_player(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         unsigned int player_id = Service::get_id_from_request(req, "player_id");
         if (!Service::valid_id(Player::name, res, player_id, "player_id"))
@@ -341,11 +306,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void deal_card(const httplib::Request &req, httplib::Response &res) {
+    void auth_deal_card(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         unsigned int player_id = Service::get_id_from_request(req, "player_id");
         if (!Service::valid_id(Player::name, res, player_id, "player_id"))
@@ -397,11 +359,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void count_cards_remaing_per_suit(const httplib::Request &req, httplib::Response &res) {
+    void auth_count_cards_remaing_per_suit(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         Storage & storage = Storage::get_instance();
         Game * game = (Game *) storage.retrieve(game_id);
@@ -438,11 +397,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void count_cards_remaining(const httplib::Request &req, httplib::Response &res) {
+    void auth_count_cards_remaining(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         Storage & storage = Storage::get_instance();
         Game * game = (Game *) storage.retrieve(game_id);
@@ -484,23 +440,23 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void get_access_code(const httplib::Request &req, httplib::Response &res) {
-        //only returnas the acccess_code if the user requesting is the creator of the game
-    }
-
-    void set_access_code(const httplib::Request &req, httplib::Response &res) {
-        // only changes the acccess_code if the user requesting is the creator of the game
-    }
-
-    void decks(const httplib::Request &req, httplib::Response &res) {
+    void auth_get_access_code(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
 
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
+        Storage &storage = Storage::get_instance();
+        Game *game = (Game *)storage.retrieve(game_id);
 
+        json data_res;
+        data_res["access_code"] = game->get_access_code();
+
+        res.status = HTTP_STATUS_OK;
+        res.set_content(data_res.dump(), JSON_RESPONSE);
+    }
+
+    void auth_decks(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
+        unsigned int game_id = Service::get_id_from_request(req);
 
         Storage &storage = Storage::get_instance();
-
         Game *game = (Game *)storage.retrieve(game_id);
 
         json data_res(game->get_deck_ids());
@@ -509,11 +465,8 @@ namespace GameService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void add_deck(const httplib::Request &req, httplib::Response &res) {
+    void auth_add_deck(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int game_id = Service::get_id_from_request(req);
-
-        if (!Service::valid_id(Game::name, res, game_id))
-            return;
 
         unsigned int deck_id = Service::get_id_from_request(req, "deck_id");
         if (!Service::valid_id(Deck::name, res, deck_id, "deck_id"))
@@ -532,5 +485,71 @@ namespace GameService {
 
         res.status = HTTP_STATUS_OK;
         res.set_content(data_res.dump(), JSON_RESPONSE);
+    }
+
+    void add_routes(httplib::Server &server) {
+        server.Post("/game", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_request(req, res, GameService::auth_create); 
+        });    
+
+        server.Get("/game", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_request(req, res, GameService::auth_retrieve); 
+        });    
+
+        server.Get("/game/:id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_retrieve_by_id); 
+        });    
+
+        server.Get("/game/:id/access_code", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_get_access_code); 
+        });    
+
+        server.Put("/game/:id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_update); 
+        });    
+
+        server.Delete("/game/:id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_remove); 
+        });   
+
+        server.Get("/game/:id/cards", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_count_cards_remaing_per_suit); 
+        });    
+
+        server.Get("/game/:id/cards/detailed", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_count_cards_remaining); 
+        });    
+
+        server.Put("/game/:id/shuffle", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_shuffle); 
+        });    
+
+        server.Get("/game/:id/players", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_players); 
+        });    
+
+        server.Put("/game/:id/players/add/:player_id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_add_player); 
+        });    
+
+        server.Get("/game/:id/players/:player_id/cards", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_player_cards); 
+        });    
+
+        server.Put("/game/:id/players/:player_id/cards/deal", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_deal_card); 
+        });    
+
+        server.Put("/game/:id/players/remove/:player_id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_remove_player); 
+        });    
+
+        server.Get("/game/:id/decks", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_decks); 
+        });    
+
+        server.Put("/game/:id/decks/add/:deck_id", [](const httplib::Request &req, httplib::Response & res) { 
+            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_add_deck); 
+        });    
     }
 } 

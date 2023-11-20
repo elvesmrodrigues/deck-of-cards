@@ -1,7 +1,7 @@
 #include "services/DeckService.hpp"
 
 namespace DeckService {
-    void create(const httplib::Request &req, httplib::Response &res) {
+    void auth_create(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int deck_id = DeckFactory::create();
 
         json data;
@@ -11,25 +11,21 @@ namespace DeckService {
         res.set_content(data.dump(), JSON_RESPONSE);
     }
 
-    void remove(const httplib::Request &req, httplib::Response &res) {
-        Storage & storage = Storage::get_instance();
-        
-        json data, data_res;
-
+    void auth_remove(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         unsigned int id = Service::get_id_from_request(req);
 
         if (!Service::valid_id(Deck::name, res, id))
             return;
 
-        storage.remove(Deck::name, id);
-        
-        data_res["message"] = "Deck removed succesfully.";
+        json data_res;
 
-        res.status = HTTP_STATUS_NO_CONTENT;
+        data_res["message"] = "A deck, once created, cannot be deleted.";
+
+        res.status = HTTP_STATUS_NOT_IMPLEMENTED;
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void update(const httplib::Request &req, httplib::Response &res) {        
+    void auth_update(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {        
         json data_res;
 
         data_res["message"] = "Update a deck is not possible.";
@@ -38,7 +34,7 @@ namespace DeckService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void retrieve(const httplib::Request &req, httplib::Response &res) {
+    void auth_retrieve(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         Storage & storage = Storage::get_instance();
 
         model_list decks = storage.retrieve_all(Deck::name);
@@ -68,7 +64,7 @@ namespace DeckService {
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
-    void retrieve_by_id(const httplib::Request &req, httplib::Response &res) {
+    void auth_retrieve_by_id(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         Storage &storage = Storage::get_instance();
         unsigned int id = Service::get_id_from_request(req);
 
@@ -81,5 +77,27 @@ namespace DeckService {
 
         res.status = HTTP_STATUS_OK;
         res.set_content(data_res.dump(), JSON_RESPONSE);
+    }
+
+    void add_routes(httplib::Server & server) {
+        server.Get("/deck", [](const httplib::Request &req, httplib::Response & res){ 
+            AuthMiddleware::verify_request(req, res, DeckService::auth_retrieve); 
+        });
+
+        server.Get("/deck/:id", [](const httplib::Request &req, httplib::Response & res){ 
+            AuthMiddleware::verify_request(req, res, DeckService::auth_retrieve_by_id); 
+        });
+        
+        server.Post("/deck", [](const httplib::Request &req, httplib::Response & res){ 
+            AuthMiddleware::verify_request(req, res, DeckService::auth_create); 
+        });
+
+        server.Put("/deck/:id", [](const httplib::Request &req, httplib::Response & res){ 
+            AuthMiddleware::verify_request(req, res, DeckService::auth_update); 
+        });    
+
+        server.Delete("/deck/:id", [](const httplib::Request &req, httplib::Response & res){ 
+            AuthMiddleware::verify_request(req, res, DeckService::auth_remove); 
+        });
     }
 }

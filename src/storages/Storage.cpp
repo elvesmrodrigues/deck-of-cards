@@ -1,4 +1,3 @@
-#include <iostream>
 #include "storages/Storage.hpp"
 
 Storage::Storage() {

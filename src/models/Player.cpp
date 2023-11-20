@@ -64,7 +64,10 @@ void Player::leave_game() {
 }
 
 bool Player::username_available(std::string username) {
-    std::cout << "Checking if " << username << " is available" << std::endl;
     username_to_id_map::iterator it = Player::user_name_to_id.find(username);
     return it == Player::user_name_to_id.end();
+}
+
+void Player::remove_username(std::string username) {
+    Player::user_name_to_id.erase(username);
 }

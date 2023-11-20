@@ -48,6 +48,7 @@ class Player: public Model {
         void leave_game();
 
         static bool username_available(std::string username);
+        static void remove_username(std::string username);
 
         std::string get_class_name() override;
 };
