@@ -80,23 +80,23 @@ namespace DeckService {
     }
 
     void add_routes(httplib::Server & server) {
-        server.Get("/deck", [](const httplib::Request &req, httplib::Response & res){ 
+        server.Get("/decks", [](const httplib::Request &req, httplib::Response & res){ 
             AuthMiddleware::verify_request(req, res, DeckService::auth_retrieve); 
         });
 
-        server.Get("/deck/:id", [](const httplib::Request &req, httplib::Response & res){ 
+        server.Get("/decks/:id", [](const httplib::Request &req, httplib::Response & res){ 
             AuthMiddleware::verify_request(req, res, DeckService::auth_retrieve_by_id); 
         });
         
-        server.Post("/deck", [](const httplib::Request &req, httplib::Response & res){ 
+        server.Post("/decks", [](const httplib::Request &req, httplib::Response & res){ 
             AuthMiddleware::verify_request(req, res, DeckService::auth_create); 
         });
 
-        server.Put("/deck/:id", [](const httplib::Request &req, httplib::Response & res){ 
+        server.Put("/decks/:id", [](const httplib::Request &req, httplib::Response & res){ 
             AuthMiddleware::verify_request(req, res, DeckService::auth_update); 
         });    
 
-        server.Delete("/deck/:id", [](const httplib::Request &req, httplib::Response & res){ 
+        server.Delete("/decks/:id", [](const httplib::Request &req, httplib::Response & res){ 
             AuthMiddleware::verify_request(req, res, DeckService::auth_remove); 
         });
     }

@@ -259,6 +259,43 @@ This endpoint deletes a player.
 
 ### Game Service
 
+This service is used to create and manage games.
+
+The badger ![Only creator can access.](https://img.shields.io/badge/Only%20creator%20can%20access-yellow) indicates that only the creator of the game can access the endpoint.
+
+#### `POST /games`
+
+![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+
+It is used to create a new game.
+
+The body of the request must be a JSON object with the following fields:
+- `access_code`: The access code of the game, used to join the game.
+
+##### Responses
+
+- `201 Created`: The game was successfully created. The response body is a JSON object with the following fields:
+  - `id`: The ID of the game.
+- `400 Bad Request`: The request body is not a valid JSON object or it does not have the required fields.
+- `401 Unauthorized`: The token is invalid.
+
+#### `GET /games`
+
+![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+
+It is used to get all the games.
+
+##### Responses
+
+- `200 OK`: The games were successfully retrieved. The response body is a JSON array with the following fields:
+  - `id`: The ID of the game.
+  - `creator`: The ID of the player that created the game.
+  - `cards`: The cards of the game.
+  - `num_decks`: The number of decks of the game.
+  - `num_remaining_cards`: The number of remaining cards of the game.
+  - `players`: The ids of the players of the game.
+-
+
 ## How this project is organized
 
 ## Usage examples

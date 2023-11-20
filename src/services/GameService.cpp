@@ -3,7 +3,6 @@
 namespace GameService {
     void auth_create(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
         field_type_list required_values = {
-            std::make_pair("creator_id", EXPECTED_TYPE_NUMBER),
             std::make_pair("access_code", EXPECTED_TYPE_STRING)
         };
 
@@ -531,7 +530,7 @@ namespace GameService {
         });    
 
         server.Put("/game/:id/players/add/:player_id", [](const httplib::Request &req, httplib::Response & res) { 
-            AuthMiddleware::verify_game_owner_request(req, res, GameService::auth_add_player); 
+            AuthMiddleware::verify_request(req, res, GameService::auth_add_player); 
         });    
 
         server.Get("/game/:id/players/:player_id/cards", [](const httplib::Request &req, httplib::Response & res) { 

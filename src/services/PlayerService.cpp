@@ -155,21 +155,21 @@ namespace PlayerService {
     }
 
     void add_routes(httplib::Server & server) {
-        server.Post("/player", PlayerService::create);
+        server.Post("/players", PlayerService::create);
 
-        server.Get("/player", [](const httplib::Request &req, httplib::Response & res){ 
+        server.Get("/players", [](const httplib::Request &req, httplib::Response & res){ 
             AuthMiddleware::verify_request(req, res, PlayerService::auth_retrieve); 
         });
 
-        server.Get("/player/:id", [](const httplib::Request &req, httplib::Response & res) { 
+        server.Get("/players/:id", [](const httplib::Request &req, httplib::Response & res) { 
             AuthMiddleware::verify_player_identity_request(req, res, PlayerService::auth_retrieve_by_id); 
         });
 
-        server.Put("/player/:id", [](const httplib::Request &req, httplib::Response & res) { 
+        server.Put("/players/:id", [](const httplib::Request &req, httplib::Response & res) { 
             AuthMiddleware::verify_player_identity_request(req, res, PlayerService::auth_update); 
         });
 
-        server.Delete("/player/:id", [](const httplib::Request &req, httplib::Response &res){
+        server.Delete("/players/:id", [](const httplib::Request &req, httplib::Response &res){
             AuthMiddleware::verify_player_identity_request(req, res, PlayerService::auth_remove); 
         });
     }
