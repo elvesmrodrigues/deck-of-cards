@@ -8,10 +8,6 @@
 #include "services/GameService.hpp"
 #include "services/Service.hpp"
 
-void add_game_routes(httplib::Server & server) {
-
-}
-
 int main(int argc, char const *argv[]) {
     httplib::Server server;
 
