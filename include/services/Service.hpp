@@ -3,36 +3,16 @@
 
 #define JSON_RESPONSE "application/json"
 
-#define HTTP_STATUS_OK 200
-#define HTTP_STATUS_CREATED 201
-#define HTTP_STATUS_NO_CONTENT 204
-#define HTTP_STATUS_BAD_REQUEST 400
-#define HTTP_STATUS_UNAUTHORIZED 401
-#define HTTP_STATUS_FORBIDEN 403
-#define HTTP_STATUS_NOT_FOUND 404
-#define HTTP_STATUS_CONFLIT 409
-#define HTTP_STATUS_SERVER_ERROR 500
-#define HTTP_STATUS_NOT_IMPLEMENTED 501
-
-#define NO_ID_IN_REQUEST 0
-
-#define MIN_ACCESS_CODE_SIZE 8
-#define MIN_STRING_SIZE 3
-
-// This is the only types we're using
-#define EXPECTED_TYPE_STRING 1
-#define EXPECTED_TYPE_NUMBER 2
-
 #include <list>
 #include <string>
 #include <utility>
 
-#include "../middlewares/AuthMiddleware.hpp"
 #include "../utils/constants.hpp"
+#include "../middlewares/AuthMiddleware.hpp"
+#include "../storages/Storage.hpp"
+
 #include "../../libs/server/httplib.h"
 #include "../../libs/nlohmann/json.hpp"
-
-#include "../storages/Storage.hpp"
 
 using nlohmann::json;
 

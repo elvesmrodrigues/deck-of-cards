@@ -21,7 +21,7 @@ namespace DeckService {
 
         data_res["message"] = "A deck, once created, cannot be deleted.";
 
-        res.status = HTTP_STATUS_NOT_IMPLEMENTED;
+        res.status = HTTP_STATUS_METHOD_NOT_ALLOWED;
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
@@ -30,7 +30,7 @@ namespace DeckService {
 
         data_res["message"] = "Update a deck is not possible.";
 
-        res.status = HTTP_STATUS_NOT_IMPLEMENTED;
+        res.status = HTTP_STATUS_METHOD_NOT_ALLOWED;
         res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
