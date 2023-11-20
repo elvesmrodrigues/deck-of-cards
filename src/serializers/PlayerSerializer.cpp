@@ -5,6 +5,7 @@ json PlayerSerializer::serialize(Player & player) {
 
     data["id"] = player.get_id();
     data["name"] = player.get_name();
+    data["username"] = player.get_username();
     data["cards"] = player.get_card_ids();
 
     if (player.is_playing())

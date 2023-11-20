@@ -2,15 +2,32 @@
 
 namespace PlayerService {
     void create(const httplib::Request &req, httplib::Response &res) {
-        field_type_list required_values = {std::make_pair("name", EXPECTED_TYPE_STRING)};
+        field_type_list required_values = {
+            std::make_pair("username", EXPECTED_TYPE_STRING),
+            std::make_pair("password", EXPECTED_TYPE_STRING),
+            std::make_pair("name", EXPECTED_TYPE_STRING),
+        };
 
         if (!Service::has_required_fields(req, res, required_values))
             return;
 
         json data = json::parse(req.body), data_res;
+        
+        std::string username = data["username"];
+
+        if (!Player::username_available(username)) {
+            data_res["message"] = "The \"sername\" is not available, please choose another.";
+
+            res.status = HTTP_STATUS_CONFLIT;
+            res.set_content(data_res.dump(), JSON_RESPONSE);
+
+            return;
+        }
+
+        std::string password = data["password"];
         std::string player_name = data["name"];
 
-        unsigned int player_id = PlayerFactory::create(player_name);
+        unsigned int player_id = PlayerFactory::create(username, password, player_name);
 
         data_res["id"] = player_id;
 
