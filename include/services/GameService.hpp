@@ -1,8 +1,6 @@
 #if !defined(GAMER_SERVICE_H)
 #define GAMER_SERVICE_H
 
-#define MIN_ACCESS_CODE_SIZE 8
-
 #include "./Service.hpp"
 #include "../models/Card.hpp"
 #include "../models/Player.hpp"

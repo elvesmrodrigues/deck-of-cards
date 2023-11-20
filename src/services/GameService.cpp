@@ -2,44 +2,27 @@
 
 namespace GameService {
     void create(const httplib::Request &req, httplib::Response &res) {
-        std::list<std::string> required_values = {"creator_id", "access_code"};
+        std::list<std::pair<std::string, unsigned int>> required_values = {
+            std::make_pair("creator_id", EXPECTED_TYPE_NUMBER), 
+            std::make_pair("access_code", EXPECTED_TYPE_STRING)
+        };
 
         if (!Service::has_required_fields(req, res, required_values))
             return;
 
-        json data = json::parse(req.body), data_res;
-
-        if (!data["creator_id"].is_number()) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field \"creator_id\" must be a integer.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        }
-
         Storage & storage = Storage::get_instance();
 
+        json data = json::parse(req.body), data_res;
+
         unsigned int creator_id = data["creator_id"];
+        std::string access_code = data["access_code"];
+
         if(!storage.exists(Player::name, creator_id)) {
             res.status = HTTP_STATUS_BAD_REQUEST;
             data_res["message"] = "The field \"creator_id\" must be a valid player ID.";
             res.set_content(data_res.dump(), JSON_RESPONSE);
             return;
         } 
-
-        if (!data["access_code"].is_string()) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field \"access_code\" must be a string.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        }
-
-        std::string access_code = data["access_code"];
-        if (access_code.size() < MIN_ACCESS_CODE_SIZE) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field \"access_code\" must be a string with at least " + std::to_string(MIN_ACCESS_CODE_SIZE) + " characters.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        }
 
         unsigned int game_id = GameFactory::create(creator_id, access_code);
 
@@ -86,49 +69,25 @@ namespace GameService {
             return;
         }
 
-        std::string field = "creator_id";
-        if (!Service::json_has_field(data, field)) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
+        field_type_list candidate_fields = {std::make_pair("access_code", EXPECTED_TYPE_STRING)};
+        std::pair<string_list, string_list> upgradable_invalid_fields = Service::get_updatable_fields(req, res, candidate_fields);
 
-            data_res["message"] = "Inform the ID of the game creator.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
+        string_list upgradable_fields = upgradable_invalid_fields.first;
+        string_list invalid_fields = upgradable_invalid_fields.second;
+
+        if (!Service::is_updatable(res, invalid_fields, upgradable_fields))
             return;
-        }
 
-        if (!data["creator_id"].is_number()) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field \"creator_id\" must be a integer.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        }
+        string_list::iterator it;
+        std::string updating_field;
 
-        unsigned int creator_id = data["creator_id"];
+        for (it=upgradable_fields.begin(); it != upgradable_fields.end(); it++) {
+            updating_field = * it;
 
-        if (game->get_creator() != creator_id) {
-            res.status = HTTP_STATUS_UNAUTHORIZED;
-            data_res["message"] = "Only the game creator can update.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        }
-
-        field = "access_code";
-        if (Service::json_has_field(data, field)) {
-            if (!data["access_code"].is_string()) {
-                res.status = HTTP_STATUS_BAD_REQUEST;
-                data_res["message"] = "The field \"access_code\" must be a string.";
-                res.set_content(data_res.dump(), JSON_RESPONSE);
-                return;
-            }
-
-            std::string access_code = data["access_code"];
-            if (access_code.size() < MIN_ACCESS_CODE_SIZE) {
-                res.status = HTTP_STATUS_BAD_REQUEST;
-                data_res["message"] = "The field \"access_code\" must be a string with at least " + std::to_string(MIN_ACCESS_CODE_SIZE) + " characters.";
-                res.set_content(data_res.dump(), JSON_RESPONSE);
-                return;
-            }
-
-            game->set_access_code(access_code);
+            if (updating_field == "access_code") {
+                std::string new_access_code = data[updating_field];
+                game->set_access_code(new_access_code);
+            } 
         }
 
         // Only for standardization, once game is a reference to the object.

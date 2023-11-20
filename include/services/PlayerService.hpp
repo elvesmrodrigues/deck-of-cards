@@ -1,8 +1,6 @@
 #if !defined(PLAYER_SERVICE_H)
 #define PLAYER_SERVICE_H
 
-#define MIN_SIZE_OF_PLAYER_NAME 3
-
 #include "./Service.hpp"
 #include "../serializers/PlayerSerializer.hpp"
 #include "../factories/PlayerFactory.hpp"

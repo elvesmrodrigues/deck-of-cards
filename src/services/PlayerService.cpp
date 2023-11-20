@@ -2,27 +2,13 @@
 
 namespace PlayerService {
     void create(const httplib::Request &req, httplib::Response &res) {
-        std::list<std::string> required_values = {"name"};
+        std::list<std::pair<std::string, unsigned int>> required_values = {std::make_pair("name", EXPECTED_TYPE_STRING)};
 
         if (!Service::has_required_fields(req, res, required_values))
             return;
 
         json data = json::parse(req.body), data_res;
-
-        if (!data["name"].is_string()) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field name must be a string.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-        }
-
         std::string player_name = data["name"];
-
-        if (player_name.size() < MIN_SIZE_OF_PLAYER_NAME) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "The field name must be a string with at least " + std::to_string(MIN_SIZE_OF_PLAYER_NAME) + " characters.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-            return;
-        }
 
         unsigned int player_id = PlayerFactory::create(player_name);
 
@@ -66,38 +52,36 @@ namespace PlayerService {
             return;
         }
 
+        field_type_list candidate_fields = {std::make_pair("name", EXPECTED_TYPE_STRING)};
+        std::pair<string_list, string_list> upgradable_invalid_fields = Service::get_updatable_fields(req, res, candidate_fields);
+
+        string_list upgradable_fields = upgradable_invalid_fields.first;
+        string_list invalid_fields = upgradable_invalid_fields.second;
+
+        if (!Service::is_updatable(res, invalid_fields, upgradable_fields))
+            return;
+
         Storage &storage = Storage::get_instance();
         Player * player = (Player *) storage.retrieve(id);
 
-        std::string field = "name";
-        if (Service::json_has_field(data, field)) {
-            if (!data[field].is_string()) {
-                res.status = HTTP_STATUS_BAD_REQUEST;
-                data_res["message"] = "The field name must be a string.";
-                res.set_content(data_res.dump(), JSON_RESPONSE);
-            }
+        string_list::iterator it;
+        std::string updating_field;
 
-            std::string player_name = data["name"];
+        for (it=upgradable_fields.begin(); it != upgradable_fields.end(); it++) {
+            updating_field = * it;
 
-            if (player_name.size() < MIN_SIZE_OF_PLAYER_NAME) {
-                res.status = HTTP_STATUS_BAD_REQUEST;
-                data_res["message"] = "The field name must be a string with at least " + std::to_string(MIN_SIZE_OF_PLAYER_NAME) + " characters.";
-                res.set_content(data_res.dump(), JSON_RESPONSE);
-                return;
-            }
-
-            player->set_name(player_name);
-            storage.update(id, player);
-
-            data_res["message"] = "Player updated succesfully.";
-
-            res.status = HTTP_STATUS_OK;
-            res.set_content(data_res.dump(), JSON_RESPONSE);
-        } else {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-            data_res["message"] = "No valid fields specified to be updated.";
-            res.set_content(data_res.dump(), JSON_RESPONSE);
+            if (updating_field == "name") {
+                std::string new_name = data[updating_field];
+                player->set_name(new_name);
+            } 
         }
+
+        storage.update(id, player);
+
+        data_res["message"] = "Player updated succesfully.";
+
+        res.status = HTTP_STATUS_OK;
+        res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
     void retrieve(const httplib::Request &req, httplib::Response &res) {
