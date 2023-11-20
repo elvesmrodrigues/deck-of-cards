@@ -69,11 +69,23 @@ The body of the request must be a JSON object with the following fields:
 - `username`: The username of the user.
 - `password`: The password of the user.
 
+##### Responses
+
+- `200 OK`: The user was successfully logged in. The response body is a JSON object with the following fields:
+  - `token`: The token of the user.
+- `400 Bad Request`: The request body is not a valid JSON object or it does not have the required fields.
+- `401 Unauthorized`: The username or password is incorrect.
+
 #### `POST /auth/logout`
 
 It is used to log out a user.
 
 To log out a user, the token of the user must be passed in the `Authorization` header with value `<token>`.
+
+##### Responses
+
+- `200 OK`: The user was successfully logged out.
+- `401 Unauthorized`: The token is invalid.
 
 ### Deck Service
 
