@@ -54,15 +54,12 @@ To run the integration tests, go to...
 
 The next subsections describe the API endpoints.
 
-The following badger indicates that the endpoint requires authentication: 
+The badger ![Authentication required.](https://img.shields.io/badge/Authentication%20required-red) indicates that the endpoint requires authentication.
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+> To authenticate, see the endpoint [`POST /auth/login`](#post-authlogin) or the [Usage examples](#usage-examples) section.
 
-To authenticate, see the endpoint [`POST /auth/login`](#post-authlogin) or the [Usage examples](#usage-examples) section.
+The badger ![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green) indicates that the endpoint is public.
 
-The following badger indicates that the endpoint is public:
-
-![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green)
 
 This means that the endpoint does not require authentication.
 
@@ -92,7 +89,7 @@ The body of the request must be a JSON object with the following fields:
 
 #### `POST /auth/logout`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to log out a user.
 
@@ -109,7 +106,7 @@ Endpoints for creating and managing decks.
 
 #### `POST /decks`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to create a new deck.
 
@@ -123,7 +120,7 @@ It is not necessary to pass any data in the request body.
 
 #### `GET /decks`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to get all the decks.
 
@@ -136,7 +133,7 @@ It is used to get all the decks.
 
 #### `GET /decks/<deck_id>`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to get a deck.
 
@@ -150,7 +147,7 @@ It is used to get a deck.
 
 #### `PUT /decks/<deck_id>`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is not possible to update a deck. This endpoint is just a placeholder.
 
@@ -160,7 +157,7 @@ It is not possible to update a deck. This endpoint is just a placeholder.
 
 #### `DELETE /decks/<deck_id>`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is not possible to delete a deck. This endpoint is just a placeholder.
 
@@ -194,7 +191,7 @@ The body of the request must be a JSON object with the following fields:
 
 #### `GET /players`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to get all the players.
 
@@ -210,7 +207,7 @@ It is used to get all the players.
 
 #### `GET /players/<player_id>`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to get a player.
 
@@ -227,7 +224,7 @@ It is used to get a player.
 
 #### `PUT /players/<player_id>`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 Allows update the `name` of a player and its `password`.
 
@@ -247,7 +244,7 @@ It is not necessary to pass both fields in the request body, but at least one of
 
 #### `DELETE /players/<player_id>`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 This endpoint deletes a player.
 
@@ -265,7 +262,7 @@ The badger ![Only creator can access.](https://img.shields.io/badge/Only%20creat
 
 #### `POST /games`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to create a new game.
 
@@ -281,7 +278,7 @@ The body of the request must be a JSON object with the following fields:
 
 #### `GET /games`
 
-![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red)
 
 It is used to get all the games.
 
