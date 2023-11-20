@@ -7,6 +7,7 @@ Storage::Storage() {
 
 Storage & Storage::get_instance() {
     static Storage instance;
+    
     return instance;
 }
 
@@ -17,8 +18,8 @@ unsigned int Storage::save(Model * model) {
     this->_data[data_id] = model;
     
     this->_model_ids[model->get_class_name()].push_back(data_id);
-
     this->_id_iterator++;
+
     return data_id;
 }
 
@@ -41,6 +42,7 @@ model_list Storage::batch_retrieve(unsigned_list &ids) {
         data.push_back(this->_data[id]);
         iter++;
     }
+
     return data;
 }
 
@@ -58,6 +60,7 @@ void Storage::remove(const std::string model_name, unsigned int &id) {
 
 bool Storage::exists(const std::string & model_name, unsigned int &id) {
     std::list<unsigned int>::iterator it = std::find(this->_model_ids[model_name].begin(), this->_model_ids[model_name].end(), id);
+
     return it != this->_model_ids[model_name].end();
 }
 

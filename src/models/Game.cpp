@@ -56,6 +56,7 @@ unsigned int Game::deal_card() {
 
     unsigned int chosen_card = this->_card_ids.front();
     this->_card_ids.pop_front();
+    
     return chosen_card;
 }
 

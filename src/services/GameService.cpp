@@ -66,6 +66,7 @@ namespace GameService {
 
             data_res["message"] = "Invalid JSON format.";
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -92,6 +93,7 @@ namespace GameService {
 
         // Only for standardization, once game is a reference to the object.
         storage.update(game_id, game);
+
         data_res["message"] = "Game updated succesfully.";
 
         res.status = HTTP_STATUS_OK;
@@ -149,7 +151,12 @@ namespace GameService {
 
         game->shuffle();
 
+        json data_res;
+
+        data_res["message"] = "The card of the game has been shuffled.";
+
         res.status = HTTP_STATUS_NO_CONTENT;
+        res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
     json parse_player(unsigned int &player_id) {
@@ -230,6 +237,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -238,6 +246,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_UNAUTHORIZED;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
         
@@ -269,6 +278,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -306,6 +316,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -314,6 +325,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_UNAUTHORIZED;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -351,6 +363,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_UNAUTHORIZED;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -359,6 +372,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_UNAUTHORIZED;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -367,6 +381,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -397,6 +412,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 
@@ -437,6 +453,7 @@ namespace GameService {
 
             res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+            
             return;
         }
 

@@ -45,10 +45,11 @@ namespace PlayerService {
         json data = Service::body_to_json(req), data_res;
 
         if (data == nullptr) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-
             data_res["message"] = "Invalid JSON format.";
+            
+            res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return;
         }
 

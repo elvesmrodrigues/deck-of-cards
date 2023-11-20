@@ -70,10 +70,11 @@ namespace Service {
         json data_res, data = Service::body_to_json(req);
 
         if (data == nullptr) {
-            res.status = HTTP_STATUS_BAD_REQUEST;
-
             data_res["message"] = "Invalid JSON format.";
+
+            res.status = HTTP_STATUS_BAD_REQUEST;
             res.set_content(data_res.dump(), JSON_RESPONSE);
+
             return false;
         }
 
@@ -94,8 +95,10 @@ namespace Service {
 
             if (!Service::field_is_valid(data, * it)) {
                 data_res["message"] = "Please, informe a valid value for the field \"" + req_field + "\"."; 
+                
                 res.status = HTTP_STATUS_BAD_REQUEST;
                 res.set_content(data_res.dump(), JSON_RESPONSE);
+
                 return false;
             }
 

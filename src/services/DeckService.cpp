@@ -30,10 +30,12 @@ namespace DeckService {
     }
 
     void update(const httplib::Request &req, httplib::Response &res) {        
-        json data;
-        data["message"] = "Update a deck is not possible.";
+        json data_res;
+
+        data_res["message"] = "Update a deck is not possible.";
+
         res.status = HTTP_STATUS_NOT_IMPLEMENTED;
-        res.set_content(data.dump(), JSON_RESPONSE);
+        res.set_content(data_res.dump(), JSON_RESPONSE);
     }
 
     void retrieve(const httplib::Request &req, httplib::Response &res) {
@@ -51,6 +53,7 @@ namespace DeckService {
 
         Deck *deck;
         json_list parsed_decks;
+        
         for (it = decks.begin(); it != decks.end(); it++) {
             json data;
 
@@ -73,6 +76,7 @@ namespace DeckService {
             return;
 
         Deck *deck = (Deck *) storage.retrieve(id);
+
         json data_res = DeckSerializer::serialize(* deck);
 
         res.status = HTTP_STATUS_OK;
