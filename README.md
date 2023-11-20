@@ -501,3 +501,120 @@ Deals a card to the player `<player_id>` in the game.
 ## How this project is organized
 
 ## Usage examples
+
+First, **create a player**:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"username": "elvesmrodrigues", "password": "strong_password", "name": "Elves"}' http://localhost:8080/players
+```
+This should return something like:
+```json
+{"id":1}
+```
+
+Then, **log in** the player:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"username": "elvesmrodrigues", "password": "strong_password"}' http://localhost:8080/auth/login
+```
+
+This should return something like:
+```json
+{"auth_token": 2}
+```
+
+Now, **create a game**. Choose a good password and pass it in the `access_code` field.
+
+You need to pass the `auth_token` in the `Authorization` header:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: 2" -d '{"access_code": "game_access_code"}' http://localhost:8080/games
+```
+
+This should return something like:
+```json
+{"id": 3}
+```
+The id returned is the id of the game, linked to the player that created it, obtained from the `auth_token`.
+
+Now, **get all the games** of the player:
+```bash
+curl -H "Content-Type: application/json" -H "Authorization: 2" http://localhost:8080/games
+```
+
+This should return something like:
+```json
+[{"id":3,"creator":1,"cards":[],"num_decks":0,"num_remaining_cards":0,"players":[]}]
+```
+
+**Create a deck**:
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: 2" -d "" http://localhost:8080/decks
+```
+
+This should return something like:
+```json
+{"id":4}
+```
+
+**Add the deck to the game**:
+```bash
+ curl -X PUT -H "Content-Type: application/json" -H "Authorization: 2" -d "" http://localhost:8080/games/3/decks/add/4
+```
+
+This should return something like:
+```json
+{"message":"Deck added to game succesfully!"}
+```
+
+You can **see the cards of the game**:
+```bash
+curl -H "Authorization: 2" http://localhost:8080/games/3/cards
+```
+
+That returns something like:
+```json
+{"hearts":13,"diamonds":13,"spades":13,"clubs":13}
+```
+
+Now, add a player to the game.
+```bash
+curl -X PUT -H "Content-Type: application/json" -H "Authorization: 2" -d "{\"access_code\": \"game_access_code\"}" http://localhost:8080/games/3/players/add/1
+```
+Give a card to the player:
+```bash
+curl -X PUT -H "Content-Type: application/json" -H "Authorization: 2" -d "" http://localhost:8080/games/3/players/1/cards/deal
+```
+
+Add a new user and give cards to them, and then call the endpoint to see the players of the game and its scores:
+```bash
+curl -H "Authorization: 2" http://localhost:8080/games/3/players
+```
+
+This will return something like:
+```json
+[
+  {
+    "cards": [
+      "HEARTS JACK",
+      "CLUBS 3",
+      "DIAMONDS 5",
+      "DIAMONDS JACK"
+    ],
+    "id": 163,
+    "name": "Jorge",
+    "score": 30,
+    "username": "jorge"
+  },
+  {
+    "cards": [
+      "HEARTS ACE",
+      "HEARTS 4",
+      "HEARTS 3",
+      "DIAMONDS 6"
+    ],
+    "id": 1,
+    "name": "Elves",
+    "score": 14,
+    "username": "elvesmrodrigues"
+  }
+]
+```
