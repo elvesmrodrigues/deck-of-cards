@@ -62,9 +62,3 @@ bool Storage::exists(const std::string & model_name, unsigned int &id) {
 
     return it != this->_model_ids[model_name].end();
 }
-
-Storage::~Storage() {
-    for (auto &pair : this->_data) {
-        delete pair.second;
-    }
-}

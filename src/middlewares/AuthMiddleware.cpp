@@ -44,6 +44,17 @@ namespace AuthMiddleware {
     bool _valid_user_from_auth_token(httplib::Response &res, unsigned int &auth_token) {
         Storage &storage = Storage::get_instance();
 
+        if (!storage.exists(AuthToken::name, auth_token)) {
+            json data_res;
+
+            data_res["message"] = "Invalid auth token.";
+
+            res.status = HTTP_STATUS_UNAUTHORIZED;
+            res.set_content(data_res.dump(), JSON_RESPONSE);
+
+            return false;
+        }
+
         AuthToken *token = (AuthToken *)storage.retrieve(auth_token);
         unsigned int player_id = token->get_player_id();
 

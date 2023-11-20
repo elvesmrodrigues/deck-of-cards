@@ -1,11 +1,13 @@
 
 CC = g++
 CFLAGS = -std=c++11 -Wall
-TARGET = ./bin/server
+TARGET = server
+TEST_TARGET = ./bin/test
 
 BIN_DIR = ./obj
-
+BUILD_DIR = ./build
 SRC_DIR = ./src
+TEST_DIR = ./test
 INCLUDE_DIR = ./include
 LIB_DIR = ./libs
 
@@ -30,8 +32,8 @@ BIN_FILES = ${BIN_DIR}/main.o \
 			${BIN_DIR}/serializer_game.o \
 			${BIN_DIR}/auth_middleware.o \
 
-${TARGET}: ${BIN_FILES}
-	${CC} ${CFLAGS} -o ${TARGET} ${BIN_DIR}/*.o
+${BUILD_DIR}/${TARGET}: ${BIN_FILES}
+	${CC} ${CFLAGS} -o ${BUILD_DIR}/${TARGET} ${BIN_DIR}/*.o
 
 # Model binaries
 ${BIN_DIR}/main.o: ${SRC_DIR}/main.cpp
@@ -99,8 +101,44 @@ ${BIN_DIR}/auth_middleware.o: ${INCLUDE_DIR}/middlewares/AuthMiddleware.hpp ${SR
 ${BIN_DIR}/storage.o: ${INCLUDE_DIR}/storages/Storage.hpp ${SRC_DIR}/storages/Storage.cpp 
 	${CC} ${CFLAGS} -I ${INCLUDE_DIR} -c ${SRC_DIR}/storages/Storage.cpp  -o ${BIN_DIR}/storage.o
 
-run:
-	${TARGET}
+run: ${BUILD_DIR}/${TARGET}
+	${BUILD_DIR}/${TARGET}
 
 clean:
-	rm -f ${BIN_DIR}/*.o ${TARGET}
+	rm -f ${BUILD_DIR}/* ${BIN_DIR}/*
+
+test_storage: ${BIN_DIR}/storage_test
+	${BIN_DIR}/storage_test
+
+${BIN_DIR}/storage_test: ${BIN_DIR}/storage_test.o ${BIN_DIR}/storage.o ${BIN_DIR}/model.o ${BIN_DIR}/model_card.o ${BIN_DIR}/model_deck.o ${BIN_DIR}/model_game.o ${BIN_DIR}/model_player.o ${BIN_DIR}/model_auth_token.o 
+	${CC} ${CFLAGS} -o ${BIN_DIR}/storage_test ${BIN_DIR}/storage_test.o ${BIN_DIR}/storage.o ${BIN_DIR}/model.o ${BIN_DIR}/model_card.o ${BIN_DIR}/model_deck.o ${BIN_DIR}/model_game.o ${BIN_DIR}/model_player.o ${BIN_DIR}/model_auth_token.o 
+
+${BIN_DIR}/storage_test.o: ${LIB_DIR}/doctest/doctest.h ${TEST_DIR}/storages/TestStorage.cpp
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -I ${LIB_DIR}/ -c ${TEST_DIR}/storages/TestStorage.cpp -o ${BIN_DIR}/storage_test.o 
+
+test_player: ${BIN_DIR}/player_test
+	${BIN_DIR}/player_test
+
+${BIN_DIR}/player_test: ${BIN_DIR}/player_test.o ${BIN_DIR}/model.o ${BIN_DIR}/model_player.o 
+	${CC} ${CFLAGS} -o ${BIN_DIR}/player_test ${BIN_DIR}/player_test.o ${BIN_DIR}/model.o ${BIN_DIR}/model_player.o
+
+${BIN_DIR}/player_test.o: ${LIB_DIR}/doctest/doctest.h ${TEST_DIR}/models/TestPlayer.cpp
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -I ${LIB_DIR}/ -c ${TEST_DIR}/models/TestPlayer.cpp -o ${BIN_DIR}/player_test.o
+
+test_game: ${BIN_DIR}/game_test
+	${BIN_DIR}/game_test
+
+${BIN_DIR}/game_test: ${BIN_DIR}/game_test.o ${BIN_DIR}/model.o ${BIN_DIR}/model_game.o  ${BIN_DIR}/model_deck.o
+	${CC} ${CFLAGS} -o ${BIN_DIR}/game_test ${BIN_DIR}/game_test.o ${BIN_DIR}/model.o ${BIN_DIR}/model_game.o ${BIN_DIR}/model_deck.o
+
+${BIN_DIR}/game_test.o: ${LIB_DIR}/doctest/doctest.h ${TEST_DIR}/models/TestGame.cpp
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -I ${LIB_DIR}/ -c ${TEST_DIR}/models/TestGame.cpp -o ${BIN_DIR}/game_test.o
+
+test_middleware: ${BIN_DIR}/middleware_test
+	${BIN_DIR}/middleware_test
+
+${BIN_DIR}/middleware_test: ${BIN_DIR}/middleware_test.o ${BIN_DIR}/auth_middleware.o ${BIN_DIR}/service.o ${BIN_DIR}/model.o ${BIN_DIR}/model_player.o ${BIN_DIR}/model_game.o ${BIN_DIR}/model_deck.o ${BIN_DIR}/model_auth_token.o ${BIN_DIR}/storage.o
+	${CC} ${CFLAGS} -o ${BIN_DIR}/middleware_test ${BIN_DIR}/middleware_test.o ${BIN_DIR}/auth_middleware.o ${BIN_DIR}/model.o ${BIN_DIR}/model_player.o ${BIN_DIR}/model_game.o ${BIN_DIR}/service.o ${BIN_DIR}/model_deck.o ${BIN_DIR}/model_auth_token.o ${BIN_DIR}/storage.o
+
+${BIN_DIR}/middleware_test.o: ${LIB_DIR}/doctest/doctest.h ${TEST_DIR}/middlewares/TestAuthMiddleware.cpp
+	${CC} ${CFLAGS} -I ${INCLUDE_DIR}/ -I ${LIB_DIR}/ -c ${TEST_DIR}/middlewares/TestAuthMiddleware.cpp -o ${BIN_DIR}/middleware_test.o

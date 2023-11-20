@@ -12,7 +12,7 @@ Game::Game(unsigned int creator_id, std::string access_code) {
 }
 
 void Game::add_player(unsigned int player_id) {
-    this->_player_ids.push_front(player_id);
+    this->_player_ids.push_back(player_id);
 }
 
 void Game::remove_player(unsigned int player_id) {
@@ -20,7 +20,7 @@ void Game::remove_player(unsigned int player_id) {
 }
 
 void Game::add_deck(Deck &deck) {
-    this->_deck_ids.push_front(deck.get_id());
+    this->_deck_ids.push_back(deck.get_id());
     this->_card_ids.splice(this->_card_ids.end(), deck.get_card_ids());
     this->shuffle();
 }

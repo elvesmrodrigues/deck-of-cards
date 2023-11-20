@@ -7,6 +7,8 @@ namespace Service {
         } catch (const std::out_of_range &e) {   
             return NO_ID_IN_REQUEST;
         } 
+
+        httplib::Request req2;        
     }
 
     bool valid_id(const std::string &model_name, httplib::Response &res, unsigned int &id, const std::string &id_name) {

@@ -1,7 +1,6 @@
 #if !defined(DATA_STORAGE_H)
 #define DATA_STORAGE_H
 
-
 #include <iostream>
 #include <list>
 #include <map>
@@ -35,7 +34,6 @@ class Storage {
 
         bool exists(const std::string & model_name, unsigned int &id);
 
-        ~Storage();
 };
 
 #endif // DATA_STORAGE_H

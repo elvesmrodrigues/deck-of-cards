@@ -10,8 +10,11 @@ Player::Player(std::string username, std::string password, std::string name) {
     this->_password = password;
 
     this->_playing_game = 0;
-    // this is the model name
-    name = "player";
+}
+
+void Player::set_id(unsigned int id) {
+    this->id = id;
+    Player::user_name_to_id[this->_username] = id;
 }
 
 std::string Player::get_name() {
@@ -69,5 +72,11 @@ bool Player::username_available(std::string username) {
 }
 
 void Player::remove_username(std::string username) {
-    Player::user_name_to_id.erase(username);
+    std::cout << "removing username: " << username << "\n";
+
+    username_to_id_map::iterator it = Player::user_name_to_id.find(username);
+    if (it != Player::user_name_to_id.end()) {
+        Player::user_name_to_id.erase(it);
+    }
+
 }

@@ -51,6 +51,7 @@ class Player: public Model {
         static void remove_username(std::string username);
 
         std::string get_class_name() override;
+        void set_id(unsigned int id) override;
 };
 
 #endif // PLAYER_MODEL_H
