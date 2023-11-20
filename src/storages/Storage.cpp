@@ -30,10 +30,12 @@ Model * Storage::retrieve(unsigned int &id) {
     return this->_data[id];
 }
 
-std::list<Model *> Storage::batch_retrieve(std::list<unsigned int> &ids) {
-    std::list<Model *> data;
-    std::list<unsigned int>::iterator iter = ids.begin();
+model_list Storage::batch_retrieve(unsigned_list &ids) {
+    model_list data;
+    unsigned_list::iterator iter = ids.begin();
+
     unsigned int id;
+
     while(iter != ids.end()) {
         id = *iter;
         data.push_back(this->_data[id]);
@@ -42,7 +44,7 @@ std::list<Model *> Storage::batch_retrieve(std::list<unsigned int> &ids) {
     return data;
 }
 
-std::list<Model *> Storage::retrieve_all(const std::string model_name) {
+model_list Storage::retrieve_all(const std::string model_name) {
     return this->batch_retrieve(this->_model_ids[model_name]);
 }
 

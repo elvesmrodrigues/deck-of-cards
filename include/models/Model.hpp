@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "../utils/constants.hpp"
+
 class Model {
     public:
         static std::string name;

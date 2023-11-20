@@ -11,7 +11,7 @@
 class Player: public Model {
     private:
         std::string _name;
-        std::list<unsigned int> _card_ids;
+        unsigned_list _card_ids;
 
         // if 0, the player isn't playing.
         // A player cannot be added to different game at same time
@@ -25,7 +25,7 @@ class Player: public Model {
         std::string get_name();
         void set_name(std::string name);
 
-        std::list<unsigned int> &get_card_ids();
+        unsigned_list &get_card_ids();
         void receive_card(unsigned int card_id);
         
         bool is_playing();

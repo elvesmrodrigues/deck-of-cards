@@ -1,6 +1,7 @@
 #if !defined(GAME_FACTORY_H)
 #define GAME_FACTORY_H
 
+#include "../utils/constants.hpp"
 #include "../models/Game.hpp"
 #include "../storages/Storage.hpp"
 

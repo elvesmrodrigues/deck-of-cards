@@ -8,14 +8,14 @@
 
 class Deck: public Model {
     private:
-        std::list<unsigned int> * _card_ids;
+        unsigned_list * _card_ids;
 
     public:
         static std::string name;
 
-        Deck(std::list<unsigned int> * card_ids);
+        Deck(unsigned_list * card_ids);
 
-        std::list<unsigned int> get_card_ids();
+        unsigned_list get_card_ids();
 
         std::string get_class_name() override;
         ~Deck();

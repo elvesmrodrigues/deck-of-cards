@@ -17,7 +17,7 @@ void Player::set_name(std::string name) {
     this->_name = name;
 }
 
-std::list<unsigned int> &Player::get_card_ids() {
+unsigned_list &Player::get_card_ids() {
     return this->_card_ids;
 }
 

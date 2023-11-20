@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 
+#include "../utils/constants.hpp"
 #include "../models/Card.hpp"
 #include "../models/Deck.hpp"
 #include "../storages/Storage.hpp"

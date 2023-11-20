@@ -22,13 +22,11 @@
 #define EXPECTED_TYPE_STRING 1
 #define EXPECTED_TYPE_NUMBER 2
 
-#define string_list std::list<std::string>
-#define field_type_list std::list<std::pair<std::string, unsigned int>>
-
 #include <list>
 #include <string>
 #include <utility>
 
+#include "../utils/constants.hpp"
 #include "../../libs/server/httplib.h"
 #include "../../libs/nlohmann/json.hpp"
 
@@ -41,9 +39,9 @@ namespace Service {
     bool valid_id(const std::string &model_name, httplib::Response &res, unsigned int &id, const std::string &id_name = "id");
 
     bool field_is_valid(json & data, std::pair<std::string, unsigned int> & field);
-    bool has_required_fields(const httplib::Request &req, httplib::Response &res, std::list<std::pair<std::string, unsigned int>> &required_values);
+    bool has_required_fields(const httplib::Request &req, httplib::Response &res, field_type_list &required_values);
     
-    std::pair<string_list, string_list> get_updatable_fields(const httplib::Request &req, httplib::Response &res, std::list<std::pair<std::string, unsigned int>> &candidate_fields);
+    std::pair<string_list, string_list> get_updatable_fields(const httplib::Request &req, httplib::Response &res, field_type_list &candidate_fields);
 
     json body_to_json(const httplib::Request &req);
     bool json_has_field(json &data, std::string &field);

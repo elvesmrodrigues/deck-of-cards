@@ -11,7 +11,7 @@ unsigned int DeckFactory::create() {
                                 CARD_FACE_KING
                             };
 
-    std::list<unsigned int> * card_ids = new std::list<unsigned int>();
+    unsigned_list * card_ids = new unsigned_list();
     unsigned int i, j, card_id;
 
     for (i=0;i<suits.size();i++) {

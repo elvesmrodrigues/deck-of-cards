@@ -39,7 +39,7 @@ namespace DeckService {
     void retrieve(const httplib::Request &req, httplib::Response &res) {
         Storage & storage = Storage::get_instance();
 
-        std::list<Model *> decks = storage.retrieve_all(Deck::name);
+        model_list decks = storage.retrieve_all(Deck::name);
 
         if (!decks.size()) {
             res.status = HTTP_STATUS_OK;
@@ -47,10 +47,10 @@ namespace DeckService {
             return;
         }
 
-        std::list<Model *>::iterator it;
+        model_list::iterator it;
 
         Deck *deck;
-        std::list<json> parsed_decks;
+        json_list parsed_decks;
         for (it = decks.begin(); it != decks.end(); it++) {
             json data;
 

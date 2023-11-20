@@ -33,7 +33,7 @@ void Game::shuffle() {
 
     // pointers to elements of the list that will have their positions swapped
     int offset_1, offset_2;    
-    std::list<unsigned int>::iterator it1, it2;
+    unsigned_list::iterator it1, it2;
 
     for (int i=0;i<n_cards;i++) {
         offset_1 = std::rand() % n_cards;
@@ -63,7 +63,7 @@ unsigned int Game::get_creator() {
     return this->_creator_id;
 }
 
-std::list<unsigned int> & Game::get_card_ids() {
+unsigned_list & Game::get_card_ids() {
     return this->_card_ids;
 }
 
@@ -79,10 +79,10 @@ void Game::set_access_code(std::string access_code) {
     this->_access_code = access_code;
 }
 
-std::list<unsigned int> &Game::get_player_ids() {
+unsigned_list & Game::get_player_ids() {
     return this->_player_ids;
 }
 
-std::list<unsigned int> &Game::get_deck_ids() {
+unsigned_list & Game::get_deck_ids() {
     return this->_deck_ids;
 }

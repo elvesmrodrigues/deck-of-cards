@@ -66,7 +66,7 @@ namespace Service {
         return true;
     }
 
-    bool has_required_fields(const httplib::Request &req, httplib::Response &res, std::list<std::pair<std::string, unsigned int>> &required_values) {
+    bool has_required_fields(const httplib::Request &req, httplib::Response &res, field_type_list &required_values) {
         json data_res, data = Service::body_to_json(req);
 
         if (data == nullptr) {
@@ -78,7 +78,7 @@ namespace Service {
         }
 
         std::string req_field;
-        std::list<std::pair<std::string, unsigned int>>::iterator it;
+        field_type_list::iterator it;
 
         for (it = required_values.begin(); it != required_values.end(); it++) {
             req_field = it->first;
@@ -117,7 +117,7 @@ namespace Service {
         return data.find(field) != data.end();
     }
 
-    std::pair<string_list, string_list> get_updatable_fields(const httplib::Request &req, httplib::Response & res, std::list<std::pair<std::string, unsigned int>> &candidate_fields) {
+    std::pair<string_list, string_list> get_updatable_fields(const httplib::Request &req, httplib::Response & res, field_type_list &candidate_fields) {
         string_list updatable_fields;
         string_list invalid_fields;
 
@@ -127,7 +127,7 @@ namespace Service {
             return std::make_pair(updatable_fields, invalid_fields);
         
         std::string candidate_field;
-        std::list<std::pair<std::string, unsigned int>>::iterator it;
+        field_type_list::iterator it;
 
         for (it=candidate_fields.begin(); it != candidate_fields.end(); it++) {
             candidate_field = it->first;

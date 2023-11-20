@@ -1,6 +1,7 @@
 #if !defined(PLAYER_FACTORY_H)
 #define PLAYER_FACTORY_H
 
+#include "../utils/constants.hpp"
 #include "../models/Player.hpp"
 #include "../storages/Storage.hpp"
 

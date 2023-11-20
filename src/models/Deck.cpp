@@ -1,12 +1,12 @@
 #include "models/Deck.hpp"
 std::string Deck::name = "deck";
 
-Deck::Deck(std::list<unsigned int> * card_ids) {
+Deck::Deck(unsigned_list * card_ids) {
     this->_card_ids = card_ids;
     name = "deck";
 }
 
-std::list<unsigned int> Deck::get_card_ids() {
+unsigned_list Deck::get_card_ids() {
     return * this->_card_ids;
 }
 

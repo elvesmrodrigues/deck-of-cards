@@ -2,10 +2,9 @@
 
 namespace GameService {
     void create(const httplib::Request &req, httplib::Response &res) {
-        std::list<std::pair<std::string, unsigned int>> required_values = {
-            std::make_pair("creator_id", EXPECTED_TYPE_NUMBER), 
-            std::make_pair("access_code", EXPECTED_TYPE_STRING)
-        };
+        field_type_list required_values = {
+            std::make_pair("creator_id", EXPECTED_TYPE_NUMBER),
+            std::make_pair("access_code", EXPECTED_TYPE_STRING)};
 
         if (!Service::has_required_fields(req, res, required_values))
             return;
@@ -100,7 +99,7 @@ namespace GameService {
 
     void retrieve(const httplib::Request &req, httplib::Response &res) {
         Storage & storage = Storage::get_instance();
-        std::list<Model *> games = storage.retrieve_all(Game::name);
+        model_list games = storage.retrieve_all(Game::name);
 
         if (!games.size()) {
             res.status = HTTP_STATUS_OK;
@@ -108,10 +107,10 @@ namespace GameService {
             return;
         }
 
-        std::list<Model *>::iterator it;
+        model_list::iterator it;
 
         Game * game;
-        std::list<json> parsed_games;
+        json_list parsed_games;
 
         for (it = games.begin(); it != games.end(); it++) {
             game = (Game *) * it;
@@ -192,10 +191,10 @@ namespace GameService {
         Storage &storage = Storage::get_instance();
         Game *game = (Game *)storage.retrieve(game_id);
 
-        std::list<json> data;
+        json_list data;
 
-        std::list<unsigned int> player_ids = game->get_player_ids();
-        std::list<unsigned int>::iterator it;
+        unsigned_list player_ids = game->get_player_ids();
+        unsigned_list::iterator it;
 
         for (it = player_ids.begin(); it != player_ids.end(); it++) 
             data.push_back(GameService::parse_player(*it));
@@ -407,8 +406,8 @@ namespace GameService {
             {CARD_SUIT_SPADES, 0},
         };
 
-        std::list<unsigned int> card_ids = game->get_card_ids();
-        std::list<unsigned int>::iterator card_id_it;
+        unsigned_list card_ids = game->get_card_ids();
+        unsigned_list::iterator card_id_it;
 
         Card * card;
         for (card_id_it = card_ids.begin(); card_id_it != card_ids.end(); card_id_it++) {
@@ -452,8 +451,8 @@ namespace GameService {
             };
         }
  
-        std::list<unsigned int> card_ids = game->get_card_ids();
-        std::list<unsigned int>::iterator card_id_it;
+        unsigned_list card_ids = game->get_card_ids();
+        unsigned_list::iterator card_id_it;
 
         Card * card;
         for (card_id_it = card_ids.begin(); card_id_it != card_ids.end(); card_id_it++) {

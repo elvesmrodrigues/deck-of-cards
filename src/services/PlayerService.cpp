@@ -2,7 +2,7 @@
 
 namespace PlayerService {
     void create(const httplib::Request &req, httplib::Response &res) {
-        std::list<std::pair<std::string, unsigned int>> required_values = {std::make_pair("name", EXPECTED_TYPE_STRING)};
+        field_type_list required_values = {std::make_pair("name", EXPECTED_TYPE_STRING)};
 
         if (!Service::has_required_fields(req, res, required_values))
             return;
@@ -86,7 +86,7 @@ namespace PlayerService {
 
     void retrieve(const httplib::Request &req, httplib::Response &res) {
         Storage & storage = Storage::get_instance();
-        std::list<Model *> players = storage.retrieve_all(Player::name);
+        model_list players = storage.retrieve_all(Player::name);
 
         if (!players.size()) {
             res.status = HTTP_STATUS_OK;
@@ -94,10 +94,10 @@ namespace PlayerService {
             return;
         }
 
-        std::list<Model *>::iterator it;
+        model_list::iterator it;
 
         Player * player;
-        std::list<json> parsed_players;
+        json_list parsed_players;
 
         for (it = players.begin(); it != players.end(); it++) {
             player = (Player *) * it;

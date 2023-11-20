@@ -17,9 +17,9 @@ class Game: public Model {
     private:
         unsigned int _creator_id;
         std::string _access_code;
-        std::list<unsigned int> _player_ids;
-        std::list<unsigned int> _deck_ids;
-        std::list<unsigned int> _card_ids;
+        unsigned_list _player_ids;
+        unsigned_list _deck_ids;
+        unsigned_list _card_ids;
 
     public:
         static std::string name;
@@ -34,9 +34,9 @@ class Game: public Model {
         void add_deck(Deck &deck);
         void shuffle();
 
-        std::list<unsigned int> &get_card_ids();
-        std::list<unsigned int> &get_player_ids();
-        std::list<unsigned int> &get_deck_ids();
+        unsigned_list &get_card_ids();
+        unsigned_list &get_player_ids();
+        unsigned_list &get_deck_ids();
 
         unsigned int deal_card();
 
