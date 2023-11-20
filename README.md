@@ -618,3 +618,14 @@ This will return something like:
   }
 ]
 ```
+
+## Key improvements points
+
+There are a lot of improvements that can be made to this project. Some of them are:
+
+- Remove the use of sequential ids.
+- Instead of using std::map to store data, use a database, or std::unordered_map.
+- API documentation with [Swagger](https://swagger.io/).
+- Use [WSO2 API Manager](https://wso2.com/api-manager/) to manage the API.
+- Use [WSO2 Identity Server](https://wso2.com/identity-and-access-management/) to manage the users and authentication.
+- Among others...
