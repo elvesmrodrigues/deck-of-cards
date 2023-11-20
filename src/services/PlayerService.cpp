@@ -74,7 +74,10 @@ namespace PlayerService {
             return;
         }
 
-        field_type_list candidate_fields = {std::make_pair("name", EXPECTED_TYPE_STRING)};
+        field_type_list candidate_fields = {
+            std::make_pair("name", EXPECTED_TYPE_STRING),
+            std::make_pair("password", EXPECTED_TYPE_STRING)
+        };
         std::pair<string_list, string_list> upgradable_invalid_fields = Service::get_updatable_fields(req, res, candidate_fields);
 
         string_list upgradable_fields = upgradable_invalid_fields.first;
@@ -95,7 +98,12 @@ namespace PlayerService {
             if (updating_field == "name") {
                 std::string new_name = data[updating_field];
                 player->set_name(new_name);
-            } 
+            } else if (updating_field == "password") {
+                std::string new_password = data[updating_field];
+                player->set_password(new_password);
+            } else {
+                std::cout << "Invalid field: " << updating_field << std::endl;
+            }
         }
 
         storage.update(id, player);

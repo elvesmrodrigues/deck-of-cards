@@ -228,6 +228,8 @@ namespace GameService {
     }
 
     void auth_add_player(const httplib::Request &req, httplib::Response &res, const Player & logged_player) {
+        std::cout << "GET THE GAME access_code AND CHECK if is valid" << std::endl;
+
         unsigned int game_id = Service::get_id_from_request(req);
 
         unsigned int player_id = Service::get_id_from_request(req, "player_id");

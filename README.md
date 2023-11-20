@@ -60,7 +60,15 @@ The following badger indicates that the endpoint requires authentication:
 
 To authenticate, see the endpoint [`POST /auth/login`](#post-authlogin) or the [Usage examples](#usage-examples) section.
 
+The following badger indicates that the endpoint is public:
+
+![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green)
+
+This means that the endpoint does not require authentication.
+
 ### Auth Service
+
+![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green)
 
 The auth service is a simple token-based authentication service, and is used to authenticate users.
 
@@ -162,6 +170,92 @@ It is not possible to delete a deck. This endpoint is just a placeholder.
 - `401 Unauthorized`: The token is invalid.
 
 ### Player Service
+
+This service is used to create and manage players.
+
+#### `POST /players`
+
+![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green)
+
+It is used to create a new player.
+
+The body of the request must be a JSON object with the following fields:
+
+- `username`: The username of the player. This field must be unique among all the players.
+- `password`: The password of the player.
+- `name`: The name of the player.
+
+##### Responses
+
+- `201 Created`: The player was successfully created. The response body is a JSON object with the following fields:
+  - `id`: The ID of the player.
+- `400 Bad Request`: The request body is not a valid JSON object or it does not have the required fields.
+- `409 Conflict`: The username is already in use.
+
+#### `GET /players`
+
+![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+
+It is used to get all the players.
+
+##### Responses
+
+- `200 OK`: The players were successfully retrieved. The response body is a JSON array with the following fields:
+  - `id`: The ID of the player.
+  - `username`: The username of the player.
+  - `name`: The name of the player.
+  - `cards`: The cards of the player, if the player is in a game.
+  - `playing_game`: Whether the player is playing a game, it is the ID of the game if the player is playing a game, or `null` if the player is not playing a game.
+- `401 Unauthorized`: The token is invalid.
+
+#### `GET /players/<player_id>`
+
+![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+
+It is used to get a player.
+
+##### Responses
+
+- `200 OK`: The player was successfully retrieved. The response body is a JSON object with the following fields:
+  - `id`: The ID of the player.
+  - `username`: The username of the player.
+  - `name`: The name of the player.
+  - `cards`: The cards of the player, if the player is in a game.
+  - `playing_game`: Whether the player is playing a game, it is the ID of the game if the player is playing a game, or `null` if the player is not playing a game.
+- `401 Unauthorized`: The token is invalid.
+- `404 Not Found`: The player does not exist.
+
+#### `PUT /players/<player_id>`
+
+![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+
+Allows update the `name` of a player and its `password`.
+
+The body of the request must be a JSON object with the following fields:
+
+- `name`: The new name of the player.
+- `password`: The new password of the player.
+
+It is not necessary to pass both fields in the request body, but at least one of them must be passed.
+
+##### Responses
+
+- `200 OK`: The player was successfully updated.
+- `400 Bad Request`: The request body is not a valid JSON object or it does not have the required fields.
+- `401 Unauthorized`: The token is invalid.
+- `404 Not Found`: The player does not exist.
+
+#### `DELETE /players/<player_id>`
+
+![Need access token in header.](https://img.shields.io/badge/Need%20access%20token%20in%20header-red)
+
+This endpoint deletes a player.
+
+##### Responses
+
+- `200 OK`: The player was successfully deleted.
+- `401 Unauthorized`: The token is invalid.
+- `404 Not Found`: The player does not exist.
 
 ### Game Service
 
