@@ -4,7 +4,8 @@ namespace GameService {
     void create(const httplib::Request &req, httplib::Response &res) {
         field_type_list required_values = {
             std::make_pair("creator_id", EXPECTED_TYPE_NUMBER),
-            std::make_pair("access_code", EXPECTED_TYPE_STRING)};
+            std::make_pair("access_code", EXPECTED_TYPE_STRING)
+        };
 
         if (!Service::has_required_fields(req, res, required_values))
             return;
