@@ -9,12 +9,16 @@
 
 namespace GameService{
     json _parse_player(unsigned int &player_id);
+    json _parse_player_cards(unsigned int &player_id);
     bool _player_score_comparator(const json & a, const json & b);
-
+    
+    // retrieve all games, but without sensitive data
+    void retrieve(const httplib::Request &req, httplib::Response &res);
+    
     void auth_create(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
     void auth_remove(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
     void auth_update(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
-    void auth_retrieve(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
+    void auth_retrieve(const httplib::Request &req, httplib::Response &res, const Player &logged_player);
     void auth_retrieve_by_id(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
 
     void auth_auth_shuffle(const httplib::Request &req, httplib::Response &res, const Player & logged_player);
