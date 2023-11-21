@@ -647,8 +647,8 @@ This will return something like:
 
 There are a lot of improvements that can be made to this project. Some of them are:
 
-- Improve the error handling.
 - Add more unit tests.
+- Improve documentation.
 - Remove the use of sequential ids.
 - Instead of using std::map to store data, use a database, or std::unordered_map.
 - API documentation with [Swagger](https://swagger.io/).
