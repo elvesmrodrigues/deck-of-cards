@@ -34,8 +34,7 @@ make clean && make test_storage
 
 To test the models module, run:
 ```bash
-make clean && make test_player
-make clean && make test_game
+make clean && make test_player && make clean && make test_game
 ```
 
 To test the middleware module, run:
