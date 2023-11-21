@@ -416,6 +416,8 @@ Adds a deck <deck_id> to a game.
 
 #### `GET /games/<game_id>/cards`
 
+![Authentication required.](https://img.shields.io/badge/Authentication%20required-red) ![Only creator can access.](https://img.shields.io/badge/Only%20creator%20can%20access-yellow)
+
 Returns the remaining cards of a game for each suit.
 
 ##### Responses
