@@ -2,7 +2,7 @@
 
 This project implements an API for card deck games.
 
-The API is implemented in C++ and uses the [cpp-httplib](https://github.com/yhirose/cpp-httplib) and [nlohmann json](<https://github.com/nlohmann/json>) to parse and generate JSON.
+The API is implemented in C++ and uses the [cpp-httplib](<https://github.com/yhirose/cpp-httplib>), [nlohmann json](<https://github.com/nlohmann/json>) to parse and generate JSON and [doctest](<https://github.com/doctest/doctest>) to test the code.
 
 Go to [Usage examples](#usage-examples) to see how to use the API.
 
@@ -13,42 +13,37 @@ To run the project, you need to have the following installed:
 - `g++`: C++ compiler.
 - `make`: Build automation tool.
 
-## Building
-
-To build the project, run the following command:
-
-```bash
-make
-```
-
 ## Running
 
 To run the project, run the following command:
 
 ```bash
-make run
+make clean && make run
 ```
 
 ## Testing
 
 ### Unit tests
 
-To run the tests, run the following command:
+The unit tests are available in the `tests` directory, for the modules of `storage`, (the most important) `models` and `middleware`.
 
+To test the storage module, run:
 ```bash
-make test
+make clean && make test_storage
 ```
 
-### Integration tests
-
-The integration tests are implemented in `Python3.8` and use the [requests](https://requests.readthedocs.io/en/master/) library to make HTTP requests.
-
-To run the integration tests, go to...
-
+To test the models module, run:
 ```bash
-
-
+make clean && make test_player
+make clean && make test_game
 ```
+
+To test the middleware module, run:
+```bash
+make clean && make test_middleware
+```
+
+The tests for the other modules is a work in progress.
 
 ## API
 
@@ -500,6 +495,34 @@ Deals a card to the player `<player_id>` in the game.
 
 ## How this project is organized
 
+This project is organized in the following way:
+
+- `include`: The header files of the project.
+  - `models`: The header files of the models of the project.
+  - `storages`: The header files of the storage of the project.
+  - `middlewares`: The header files of the middleware of the project.
+  - `factories`: The header files of the factories of the project.
+  - `utils`: The header files of the utils of the project.
+  - `services`: The header files of the services of the project.
+  - `serializers`: The header files of the serializers of the project.
+- `src`: The source code of the project.
+  - `models`: The models of the project.
+  - `storages`: The storage of the project.
+  - `middlewares`: The middleware of the project.
+  - `main.cpp`: The main file of the project.
+- `test`: The unit tests of the project.
+  - `storages`: The unit tests of the storage module.
+  - `models`: The unit tests of the models module.
+  - `middleware`: The unit tests of the middleware module.
+- `libs`: External libraries used in the project.
+  - `server`: The [cpp-httplib](https://github.com/yhirose/cpp-httplib) library, for the server.
+  - `json`: The [nlohmann json](<https://github.com/nlohmann/json>) library, for parsing and generating JSON.
+  - `doctest`: The [doctest](<https://github.com/doctest/doctest>) library, for testing.
+
+- `bin`: The binary files of the project.
+- `build`: The build files of the project.
+- `Makefile`: The makefile of the project, used to build, run and test the project.
+
 ## Usage examples
 
 First, **create a player**:
@@ -623,6 +646,8 @@ This will return something like:
 
 There are a lot of improvements that can be made to this project. Some of them are:
 
+- Improve the error handling.
+- Add more unit tests.
 - Remove the use of sequential ids.
 - Instead of using std::map to store data, use a database, or std::unordered_map.
 - API documentation with [Swagger](https://swagger.io/).
