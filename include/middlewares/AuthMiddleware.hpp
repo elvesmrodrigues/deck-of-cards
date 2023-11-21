@@ -1,11 +1,13 @@
 #if !defined(AUTH_MIDDLEWARE_H)
 #define AUTH_MIDDLEWARE_H
 
+#include "../../libs/server/httplib.h"
+
 #include "../models/Game.hpp"
+#include "../models/AuthToken.hpp"
+
 #include "../storages/Storage.hpp"
 #include "../services/Service.hpp"
-#include "../../libs/server/httplib.h"
-#include "../models/AuthToken.hpp"
 
 namespace AuthMiddleware {
     bool _valid_token(const httplib::Request &req, httplib::Response &res);

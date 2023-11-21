@@ -1,17 +1,17 @@
 #if !defined(GAME_MODEL_H)
 #define GAME_MODEL_H
 
-#define NO_CARD 0 
-
 #include <cstdlib>
 #include <ctime>
-#include <string>
 #include <list>
 #include <map>
 #include <map>
+#include <string>
 
 #include "./Model.hpp"
 #include "./Deck.hpp"
+
+#include "../utils/constants.hpp"
 
 class Game: public Model {
     private:

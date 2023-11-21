@@ -1,6 +1,7 @@
 #if !defined(CONSTANTS_H)
 #define CONSTANTS_H
 
+// HTTP Status Codes
 #define HTTP_STATUS_OK 200
 #define HTTP_STATUS_CREATED 201
 #define HTTP_STATUS_NO_CONTENT 204
@@ -13,20 +14,25 @@
 #define HTTP_STATUS_SERVER_ERROR 500
 #define HTTP_STATUS_NOT_IMPLEMENTED 501
 
+// Default values when the expected value is not found
 #define NO_ID_IN_REQUEST 0
+#define NO_CARD 0
 
+// String sizes for validation
 #define MIN_ACCESS_CODE_SIZE 8
 #define MIN_STRING_SIZE 3
 
-// This is the only types we're using
+// Expected types for json fields
 #define EXPECTED_TYPE_STRING 1
 #define EXPECTED_TYPE_NUMBER 2
 
+// Card suits
 #define CARD_SUIT_HEARTS "HEARTS"
 #define CARD_SUIT_SPADES "SPADES"
 #define CARD_SUIT_CLUBS "CLUBS"
 #define CARD_SUIT_DIAMONDS "DIAMONDS"
 
+// Card faces
 #define CARD_FACE_ACE "ACE"
 #define CARD_FACE_2 "2"
 #define CARD_FACE_3 "3"
@@ -41,6 +47,7 @@
 #define CARD_FACE_QUEEN "QUEEN"
 #define CARD_FACE_KING "KING"
 
+// Make the data types more readable
 #define string_list std::list<std::string>
 #define unsigned_list std::list<unsigned int>
 #define model_list std::list<Model *>

@@ -2,8 +2,10 @@
 #define GAME_SERIALIZER_H
 
 #include "../../libs/nlohmann/json.hpp"
-#include "../models/Game.hpp"
+
 #include "../models/Card.hpp"
+#include "../models/Game.hpp"
+
 #include "../storages/Storage.hpp"
 
 using nlohmann::json;

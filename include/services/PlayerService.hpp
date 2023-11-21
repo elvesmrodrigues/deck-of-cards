@@ -4,8 +4,8 @@
 #include "./Service.hpp"
 
 #include "../models/Player.hpp"
-#include "../serializers/PlayerSerializer.hpp"
 #include "../factories/PlayerFactory.hpp"
+#include "../serializers/PlayerSerializer.hpp"
 
 namespace PlayerService {
     void create(const httplib::Request &req, httplib::Response &res);

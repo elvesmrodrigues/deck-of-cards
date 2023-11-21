@@ -1,8 +1,8 @@
 #if !defined(DECK_MODEL_H)
 #define DECK_MODEL_H
 
-#include <list>
 #include <cstdlib>
+#include <list>
 
 #include "./Model.hpp"
 

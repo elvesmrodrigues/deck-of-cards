@@ -7,12 +7,12 @@
 #include <string>
 #include <utility>
 
+#include "../../libs/server/httplib.h"
+#include "../../libs/nlohmann/json.hpp"
+
 #include "../utils/constants.hpp"
 #include "../middlewares/AuthMiddleware.hpp"
 #include "../storages/Storage.hpp"
-
-#include "../../libs/server/httplib.h"
-#include "../../libs/nlohmann/json.hpp"
 
 using nlohmann::json;
 

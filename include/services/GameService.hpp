@@ -2,9 +2,12 @@
 #define GAMER_SERVICE_H
 
 #include "./Service.hpp"
+
 #include "../models/Card.hpp"
 #include "../models/Player.hpp"
+
 #include "../factories/GameFactory.hpp"
+
 #include "../serializers/GameSerializer.hpp"
 
 namespace GameService{

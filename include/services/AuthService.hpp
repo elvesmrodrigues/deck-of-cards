@@ -1,10 +1,11 @@
 #if !defined(AUTH_SERVICE_H)
 #define AUTH_SERVICE_H
 
+#include "../models/AuthToken.hpp"
 #include "../storages/Storage.hpp"
 #include "../services/Service.hpp"
+
 #include "../../libs/server/httplib.h"
-#include "../models/AuthToken.hpp"
 
 namespace AuthService {
     void login(const httplib::Request &req, httplib::Response &res);

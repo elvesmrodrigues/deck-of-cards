@@ -3,9 +3,10 @@
 
 #include "../../libs/nlohmann/json.hpp"
 
-#include "../storages/Storage.hpp"
 #include "../models/Deck.hpp"
 #include "../models/Card.hpp"
+
+#include "../storages/Storage.hpp"
 
 using nlohmann::json;
 
