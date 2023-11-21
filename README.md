@@ -44,6 +44,36 @@ make clean && make test_middleware
 
 The tests for the other modules is a work in progress.
 
+## How this project is organized
+
+This project is organized in the following way:
+
+- `include`: The header files of the project.
+  - `models`: The header files of the models of the project.
+  - `storages`: The header files of the storage of the project.
+  - `middlewares`: The header files of the middleware of the project.
+  - `factories`: The header files of the factories of the project.
+  - `utils`: The header files of the utils of the project.
+  - `services`: The header files of the services of the project.
+  - `serializers`: The header files of the serializers of the project.
+- `src`: The source code of the project.
+  - `models`: The models of the project.
+  - `storages`: The storage of the project.
+  - `middlewares`: The middleware of the project.
+  - `main.cpp`: The main file of the project.
+- `test`: The unit tests of the project.
+  - `storages`: The unit tests of the storage module.
+  - `models`: The unit tests of the models module.
+  - `middleware`: The unit tests of the middleware module.
+- `libs`: External libraries used in the project.
+  - `server`: The [cpp-httplib](https://github.com/yhirose/cpp-httplib) library, for the server.
+  - `json`: The [nlohmann json](<https://github.com/nlohmann/json>) library, for parsing and generating JSON.
+  - `doctest`: The [doctest](<https://github.com/doctest/doctest>) library, for testing.
+
+- `bin`: The binary files of the project.
+- `build`: The build files of the project.
+- `Makefile`: The makefile of the project, used to build, run and test the project.
+
 ## API
 
 The next subsections describe the API endpoints.
@@ -491,36 +521,6 @@ Deals a card to the player `<player_id>` in the game.
 - `200 OK`: The card was successfully dealt to the player.
 - `401 Unauthorized`: The token is invalid.
 - `404 Not Found`: The game or the player does not exist.
-
-## How this project is organized
-
-This project is organized in the following way:
-
-- `include`: The header files of the project.
-  - `models`: The header files of the models of the project.
-  - `storages`: The header files of the storage of the project.
-  - `middlewares`: The header files of the middleware of the project.
-  - `factories`: The header files of the factories of the project.
-  - `utils`: The header files of the utils of the project.
-  - `services`: The header files of the services of the project.
-  - `serializers`: The header files of the serializers of the project.
-- `src`: The source code of the project.
-  - `models`: The models of the project.
-  - `storages`: The storage of the project.
-  - `middlewares`: The middleware of the project.
-  - `main.cpp`: The main file of the project.
-- `test`: The unit tests of the project.
-  - `storages`: The unit tests of the storage module.
-  - `models`: The unit tests of the models module.
-  - `middleware`: The unit tests of the middleware module.
-- `libs`: External libraries used in the project.
-  - `server`: The [cpp-httplib](https://github.com/yhirose/cpp-httplib) library, for the server.
-  - `json`: The [nlohmann json](<https://github.com/nlohmann/json>) library, for parsing and generating JSON.
-  - `doctest`: The [doctest](<https://github.com/doctest/doctest>) library, for testing.
-
-- `bin`: The binary files of the project.
-- `build`: The build files of the project.
-- `Makefile`: The makefile of the project, used to build, run and test the project.
 
 ## Usage examples
 
