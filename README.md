@@ -6,6 +6,8 @@ The API is implemented in C++ and uses the [cpp-httplib](<https://github.com/yhi
 
 Go to [Usage examples](#usage-examples) to see how to use the API.
 
+The server will run at `http://localhost:8080`.
+
 ## Prerequisites
 
 To run the project, you need to have the following installed:
