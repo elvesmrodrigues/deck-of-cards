@@ -8,6 +8,8 @@ Go to [Usage examples](#usage-examples) to see how to use the API.
 
 The server will run at `http://localhost:8080`.
 
+> Note: This project was developed and tested on Linux. It may not work on other operating systems properly.
+
 ## Prerequisites
 
 To run the project, you need to have the following installed:
