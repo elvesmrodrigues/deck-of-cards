@@ -62,3 +62,24 @@ bool Storage::exists(const std::string & model_name, unsigned int &id) {
 
     return it != this->_model_ids[model_name].end();
 }
+
+void Storage::clear() {
+    this->_id_iterator = 1;
+
+    this->_model_ids.clear();
+
+    id_to_model_map::iterator iter = this->_data.begin();
+
+    while(iter != this->_data.end()) {
+        delete iter->second;
+        iter++;
+    }
+
+    this->_data.clear();
+    
+    return;
+}
+
+Storage::~Storage() {
+    this->clear();
+}

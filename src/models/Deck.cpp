@@ -17,3 +17,7 @@ Deck::~Deck() {
 std::string Deck::get_class_name() {
     return name;
 }
+
+Deck::~Deck() {
+    // nothing to do here, since the destructor of the Storage class will delete the cards
+}

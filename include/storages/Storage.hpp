@@ -34,6 +34,9 @@ class Storage {
 
         bool exists(const std::string & model_name, unsigned int &id);
 
+        void clear();
+
+        ~Storage();
 };
 
 #endif // DATA_STORAGE_H

@@ -15,6 +15,11 @@ std::string Model::get_class_name() {
     return name;
 
 }
+
 unsigned int Model::get_id() const {
     return this->id;
+}
+
+Model::~Model() {
+    // nothing to do here
 }
