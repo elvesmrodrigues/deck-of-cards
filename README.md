@@ -89,13 +89,11 @@ This means that the endpoint does not require authentication.
 
 ### Auth Service
 
-![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green)
-
 The auth service is a simple token-based authentication service, and is used to authenticate users.
 
-> Except when creating a user and logging in, all the other endpoints require a token to be passed in the `Authorization` header with value `<token>`.
-
 #### `POST /auth/login`
+
+![Public endpoint.](https://img.shields.io/badge/Public%20endpoint-green)
 
 It is used to log in a user.
 
